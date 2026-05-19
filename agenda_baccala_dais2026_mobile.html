@@ -1,0 +1,2183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roteiro Baccala (Mobile) — DAIS 2026</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0e1a">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root,
+  [data-theme="dark"] {
+    --bg: #0a0e1a;
+    --panel: #131825;
+    --panel-2: #1a2030;
+    --border: #232a3d;
+    --text: #e8ecf5;
+    --text-dim: #8b95a8;
+    --accent: #ff3621;
+    --accent-2: #00a972;
+    --warn: #f5a623;
+    --info: #4a9eff;
+    --high: #ff3621;
+    --mid: #f5a623;
+    --low: #4a9eff;
+    --done: #00a972;
+    --overlay-bg: rgba(0,0,0,0.7);
+  }
+  [data-theme="light"] {
+    --bg: #f5f6fa;
+    --panel: #ffffff;
+    --panel-2: #f0f2f7;
+    --border: #d8dde8;
+    --text: #1a1d2e;
+    --text-dim: #6b7280;
+    --accent: #ff3621;
+    --accent-2: #00a972;
+    --warn: #d97706;
+    --info: #2563eb;
+    --high: #dc2626;
+    --mid: #d97706;
+    --low: #2563eb;
+    --done: #059669;
+    --overlay-bg: rgba(0,0,0,0.4);
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 12px 12px calc(80px + env(safe-area-inset-bottom)) 12px;
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+  input, textarea, select { font-size: 16px !important; }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+  .event-info {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .event-info strong { color: var(--text); }
+
+  .header-right {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+  .weather-widget {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--text-dim);
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .weather-loading {
+    color: var(--text-dim);
+    font-size: 11px;
+    padding: 8px 0;
+    text-align: center;
+  }
+  .weather-current {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .weather-icon { font-size: 28px; line-height: 1; }
+  .weather-temp {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1;
+  }
+  .weather-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+  }
+  .weather-location {
+    font-size: 11px;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .weather-cond {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .weather-forecast {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+  }
+  .weather-day {
+    text-align: center;
+    padding: 4px 2px;
+    background: var(--panel-2);
+    border-radius: 4px;
+  }
+  .weather-day-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .weather-day-icon { font-size: 16px; line-height: 1.2; }
+  .weather-day-temp {
+    font-size: 10px;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .weather-day-temp .max { color: var(--text); }
+  .weather-day-temp .min { color: var(--text-dim); }
+  .weather-updated {
+    font-size: 9px;
+    color: var(--text-dim);
+    text-align: right;
+    margin-top: 2px;
+  }
+  .weather-error {
+    font-size: 11px;
+    color: var(--text-dim);
+    padding: 8px 0;
+    text-align: center;
+  }
+
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--panel-2); border-color: var(--accent); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: white; }
+  .btn.primary:hover { background: #d62b1a; }
+  .theme-toggle { margin-left: auto; }
+
+  .storage-warning {
+    background: rgba(245,166,35,0.1);
+    border: 1px solid var(--warn);
+    color: var(--text);
+    padding: 8px 14px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 12px;
+  }
+  .storage-warning .actions { margin-top: 4px; }
+  .storage-warning button {
+    background: var(--warn);
+    border: none;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    margin-right: 6px;
+  }
+
+  /* Modal genérico */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay-bg);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+  }
+  .modal-overlay.visible { display: flex; }
+  .modal {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  .modal-field { margin-bottom: 12px; }
+  .modal-field label {
+    display: block;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .modal-field input,
+  .modal-field select,
+  .modal-field textarea {
+    width: 100%;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 10px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-family: inherit;
+  }
+  .modal-field textarea { resize: vertical; min-height: 70px; }
+  .modal-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 14px;
+  }
+
+  /* Bloco expandido de comentários + fotos */
+  .comment-block {
+    margin-top: 10px;
+    padding: 12px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: none;
+  }
+  .comment-block.visible { display: block; }
+  .comment-block-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .comment-block textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+    margin-bottom: 10px;
+  }
+  .photo-upload-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .photo-upload-btn {
+    background: var(--bg);
+    border: 1px dashed var(--border);
+    color: var(--text-dim);
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 0.15s;
+  }
+  .photo-upload-btn:hover { border-color: var(--accent); color: var(--text); }
+  .photo-count {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .photo-thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .photo-thumb {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--bg);
+  }
+  .photo-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .photo-thumb .photo-remove {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    font-size: 11px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Camadas de comentários externos (merge) */
+  .external-comment {
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: rgba(74,158,255,0.08);
+    border-left: 3px solid var(--info);
+    border-radius: 4px;
+    font-size: 12px;
+  }
+  .external-comment-author {
+    font-size: 10px;
+    color: var(--info);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  /* Sessões adicionadas pelo usuário */
+  .session.user-added,
+  .suggestion-card.user-added {
+    border-left-color: var(--accent-2);
+  }
+  .user-added-badge {
+    display: inline-block;
+    background: var(--accent-2);
+    color: white;
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 8px;
+    margin-left: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+  .tab {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    padding: 12px 18px;
+    cursor: pointer;
+    font-size: 14px;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+    font-weight: 500;
+  }
+  .tab .count {
+    display: inline-block;
+    background: var(--panel-2);
+    color: var(--text-dim);
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    margin-left: 6px;
+  }
+  .tab.active .count { background: var(--accent); color: white; }
+
+  .day-content { display: none; }
+  .day-content.active { display: block; }
+
+  .day-header {
+    margin-bottom: 16px;
+  }
+  .day-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .day-summary {
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  .filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+  .filter-chip {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 4px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-chip:hover { color: var(--text); }
+  .filter-chip.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  .session {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    transition: all 0.15s;
+  }
+  .session.priority-high { border-left-color: var(--high); }
+  .session.priority-mid { border-left-color: var(--mid); }
+  .session.priority-low { border-left-color: var(--low); }
+  .session.done {
+    opacity: 0.5;
+    border-left-color: var(--done);
+  }
+  .session.done .session-title { text-decoration: line-through; }
+
+  .session-row {
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 14px;
+    align-items: start;
+  }
+  .session-time {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+    padding-top: 2px;
+  }
+  .session-time .duration {
+    display: block;
+    font-size: 10px;
+    opacity: 0.7;
+    margin-top: 2px;
+  }
+  .session-main { min-width: 0; }
+  .session-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+  .session-meta {
+    font-size: 11px;
+    color: var(--text-dim);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .session-meta .tag {
+    background: var(--panel-2);
+    padding: 2px 7px;
+    border-radius: 3px;
+  }
+  .session-meta .tag.type-keynote { background: rgba(255,54,33,0.2); color: #ff8b7a; }
+  .session-meta .tag.type-breakout { background: rgba(74,158,255,0.15); color: #7ab8ff; }
+  .session-meta .tag.type-meeting { background: rgba(0,169,114,0.15); color: #4ed9a4; }
+  .session-meta .tag.type-networking { background: rgba(245,166,35,0.15); color: #ffc97a; }
+  .session-meta .tag.type-meal { background: var(--panel-2); }
+  .session-meta .tag.type-free { background: rgba(139,149,168,0.15); }
+
+  .session-rationale {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-top: 4px;
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 4px;
+    border-left: 2px solid var(--border);
+  }
+  .session-rationale strong { color: var(--text); font-style: normal; }
+
+  .session-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-end;
+  }
+  .action-btn {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .action-btn:hover { color: var(--text); border-color: var(--accent); }
+  .action-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+  .notes-area {
+    margin-top: 8px;
+    width: 100%;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 50px;
+    display: none;
+  }
+  .notes-area.visible { display: block; }
+
+  .slot-divider {
+    margin: 18px 0 10px;
+    padding-bottom: 4px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-dim);
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .stat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+  }
+  .stat-value { font-size: 20px; font-weight: 600; }
+  .stat-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .day-stat {
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .day-stat:hover {
+    border-color: var(--accent);
+    background: var(--panel-2);
+  }
+  .day-stat.active {
+    border-color: var(--accent);
+    background: var(--panel-2);
+    box-shadow: inset 0 0 0 1px var(--accent);
+  }
+  .day-stat .stat-label {
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .day-stat .stat-value {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .day-stat .stat-sub {
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--text-dim);
+    text-transform: lowercase;
+    letter-spacing: 0;
+  }
+  .day-stat .stat-meta {
+    display: flex;
+    gap: 10px;
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+  .day-stat .stat-meta .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+  .day-stat .stat-meta .dot.high { background: var(--high); }
+  .day-stat .stat-meta .dot.done { background: var(--done); }
+  .day-stat .stat-meta .dot.star { background: var(--warn); }
+  .suggestion-stat .stat-label { color: var(--info); }
+
+  .legend {
+    display: flex;
+    gap: 14px;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+  }
+
+  footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: center;
+  }
+
+  .suggestion-group {
+    margin-bottom: 24px;
+  }
+  .suggestion-group-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    padding: 8px 0;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .suggestion-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--info);
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    transition: all 0.15s;
+  }
+  .suggestion-card.starred { border-left-color: var(--warn); }
+  .suggestion-card.done {
+    opacity: 0.55;
+    border-left-color: var(--done);
+  }
+  .suggestion-card.done .suggestion-title { text-decoration: line-through; }
+  .suggestion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .suggestion-title {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    flex: 1;
+    min-width: 0;
+  }
+  .suggestion-title:hover { color: var(--info); }
+  .suggestion-external {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-left: 4px;
+  }
+  .suggestion-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .suggestion-company {
+    font-size: 12px;
+    color: var(--info);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .suggestion-theme {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.45;
+  }
+
+  @media (max-width: 700px) {
+    .session-row { grid-template-columns: 70px 1fr; }
+    .session-actions { grid-column: 1 / -1; flex-direction: row; justify-content: flex-end; }
+  }
+
+  /* ============================================================
+     MOBILE OPTIMIZATIONS
+     ============================================================ */
+
+  header { padding-bottom: 12px; margin-bottom: 12px; }
+  h1 { font-size: 18px; }
+  .subtitle { font-size: 12px; }
+  .header-top {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    justify-content: space-between;
+  }
+  .info-toggle-btn {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .header-right {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .header-right.visible { display: flex; }
+  .event-info { font-size: 12px; padding: 10px 12px; }
+  .weather-widget { min-width: 0; padding: 10px 12px; }
+
+  .weather-mini {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .weather-mini .weather-icon { font-size: 18px; }
+  .weather-mini .temp { font-weight: 600; color: var(--text); }
+
+  .toolbar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .btn { padding: 8px 12px; font-size: 12px; min-height: 38px; }
+  .btn-icon-only {
+    width: 38px; padding: 8px 0;
+    justify-content: center;
+    display: inline-flex;
+    align-items: center;
+  }
+  .toolbar-more { position: relative; }
+  .toolbar-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px;
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    z-index: 100;
+    min-width: 180px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+  .toolbar-menu.visible { display: flex; }
+  .toolbar-menu button {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: 4px;
+    text-align: left;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .toolbar-menu button:hover { background: var(--panel-2); }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .stat { padding: 8px 10px; }
+  .day-stat .stat-label { font-size: 10px; margin-bottom: 4px; }
+  .day-stat .stat-value { font-size: 16px; gap: 4px; margin-bottom: 4px; }
+  .day-stat .stat-sub { font-size: 9px; }
+  .day-stat .stat-meta { font-size: 9px; gap: 6px; }
+  .suggestion-stat { grid-column: span 2; }
+
+  .day-header { margin-bottom: 12px; }
+  .day-title { font-size: 17px; }
+  .day-summary { font-size: 12px; }
+
+  .filters {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    margin-bottom: 12px;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .filter-chip {
+    white-space: nowrap;
+    padding: 5px 11px;
+    flex-shrink: 0;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+  }
+
+  .session { padding: 12px; margin-bottom: 8px; }
+  .session-row { display: block; position: relative; }
+  .session-time {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+    display: inline-block;
+    background: var(--panel-2);
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+  .session-time .duration { display: inline; margin-left: 4px; opacity: 0.7; }
+  .session-title { font-size: 14px; padding-right: 100px; }
+  .session-meta { font-size: 10px; }
+  .session-rationale { font-size: 12px; }
+  .session-actions {
+    position: absolute;
+    top: 0; right: 0;
+    flex-direction: row;
+    gap: 4px;
+  }
+  .action-btn { width: 32px; height: 32px; font-size: 13px; }
+
+  .suggestion-card { padding: 10px 12px; }
+  .suggestion-header { flex-direction: column; align-items: stretch; gap: 6px; }
+  .suggestion-title { font-size: 13px; }
+  .suggestion-actions { justify-content: flex-end; gap: 4px; }
+  .suggestion-company { font-size: 11px; }
+  .suggestion-theme { font-size: 11px; }
+  .suggestion-group-title { font-size: 13px; }
+
+  .comment-block { padding: 10px; }
+  .comment-block textarea { min-height: 100px; }
+  .photo-thumbs { grid-template-columns: repeat(3, 1fr); }
+
+  .modal-overlay { padding: 0; align-items: flex-end; }
+  .modal {
+    max-width: 100%;
+    width: 100%;
+    max-height: 92vh;
+    border-radius: 16px 16px 0 0;
+    padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+  }
+  .modal-field input,
+  .modal-field select,
+  .modal-field textarea {
+    padding: 10px 12px;
+    min-height: 42px;
+  }
+  .modal-actions button { min-height: 42px; padding: 0 16px; }
+
+  .fab {
+    position: fixed;
+    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    background: var(--accent);
+    color: white;
+    width: 56px; height: 56px;
+    border-radius: 28px;
+    border: none;
+    box-shadow: 0 4px 16px rgba(255,54,33,0.4);
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .fab:active { transform: scale(0.95); }
+
+  .notes-area { min-height: 60px; padding: 10px; }
+  footer { font-size: 10px; margin-top: 24px; padding-top: 14px; }
+
+  @media (min-width: 768px) {
+    body { padding: 24px 24px calc(40px + env(safe-area-inset-bottom)) 24px; }
+    .info-toggle-btn { display: none; }
+    .header-right { display: flex !important; flex-direction: row; }
+    .header-top { flex-direction: row; align-items: flex-start; }
+    .weather-mini { display: none; }
+    h1 { font-size: 24px; }
+    .subtitle { font-size: 14px; }
+    .stats { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+    .suggestion-stat { grid-column: auto; }
+    .session-row { display: grid; grid-template-columns: 90px 1fr auto; gap: 14px; align-items: start; }
+    .session-time { display: block; background: transparent; padding: 2px 0; }
+    .session-time .duration { display: block; }
+    .session-title { padding-right: 0; }
+    .session-actions { position: static; flex-direction: column; }
+    .suggestion-header { flex-direction: row; align-items: flex-start; }
+    .modal-overlay { padding: 20px; align-items: center; }
+    .modal { max-width: 600px; border-radius: 10px; }
+    .fab { display: none; }
+    .photo-thumbs { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+  }
+
+  @media print {
+    body { background: white; color: black; padding: 0; }
+    .toolbar, .tabs, .filters, .session-actions, .action-btn { display: none !important; }
+    .day-content { display: block !important; page-break-after: always; }
+    .session { background: white; border: 1px solid #ccc; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="header-top">
+      <div style="flex:1;min-width:0;">
+        <h1>Roteiro DAIS 2026</h1>
+        <div class="subtitle">Baccala · PortoBank</div>
+      </div>
+      <div class="weather-mini" id="weather-mini" onclick="toggleHeaderInfo()">
+        <span class="weather-icon">⏳</span>
+        <span class="temp">—</span>
+      </div>
+      <button class="info-toggle-btn" onclick="toggleHeaderInfo()" title="Mostrar info de viagem">ℹ️</button>
+    </div>
+    <div class="header-right" id="headerRight">
+      <div class="event-info">
+        <strong>Estadia Baccala: 14–18 jun 2026</strong><br>
+        Hotel: W San Francisco · 3rd Street, 181<br>
+        Moscone Center, San Francisco
+      </div>
+      <div class="weather-widget" id="weather-widget">
+        <div class="weather-loading">Carregando clima...</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <button class="btn" onclick="exportData()" title="Exportar tudo (JSON)">💾 Salvar</button>
+    <div class="toolbar-more" style="margin-left:auto;display:flex;gap:6px;">
+      <button class="btn btn-icon-only theme-toggle" onclick="toggleTheme()" title="Alternar tema claro/escuro" id="themeBtn">🌙</button>
+      <button class="btn btn-icon-only" onclick="toggleToolbarMenu(event)" title="Mais opções">⋯</button>
+      <div class="toolbar-menu" id="toolbarMenu">
+        <button onclick="exportReport(); closeToolbarMenu()">📄 Exportar relatório</button>
+        <button onclick="openNewRecord(); closeToolbarMenu()">➕ Novo registro</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="storage-warning" id="storageWarning" style="display:none;"></div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot" style="background:var(--high)"></span> Prioridade alta — não perder</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--mid)"></span> Prioridade média</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--low)"></span> Opcional / informativo</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--done)"></span> Concluído</span>
+  </div>
+
+  <div id="content"></div>
+
+  <footer>
+    Roteiro v1 · agenda oficial sujeita a atualização pela Databricks · catálogo completo em databricks.com/dataaisummit/agenda<br>
+    Progresso salvo localmente no navegador (localStorage). Use "Salvar progresso" para exportar JSON.
+  </footer>
+
+</div>
+
+<button class="fab" onclick="openNewRecord()" title="Novo registro" aria-label="Novo registro">➕</button>
+
+<!-- Modal: Novo registro -->
+<div class="modal-overlay" id="newRecordModal">
+  <div class="modal">
+    <div class="modal-title">➕ Novo registro</div>
+    <div class="modal-field">
+      <label>Dia</label>
+      <select id="nr-day"></select>
+    </div>
+    <div class="modal-field">
+      <label>Tipo</label>
+      <select id="nr-type">
+        <option value="meeting">Reunião</option>
+        <option value="breakout">Sessão extra (não estava na lista)</option>
+        <option value="networking">Networking / contato</option>
+        <option value="free">Observação / nota</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label>Horário (livre — ex: "14:30" ou "Tarde")</label>
+      <input type="text" id="nr-time" placeholder="14:30">
+    </div>
+    <div class="modal-field">
+      <label>Título / Assunto</label>
+      <input type="text" id="nr-title" placeholder="Ex: Reunião com Snowflake account team">
+    </div>
+    <div class="modal-field">
+      <label>Detalhes / pessoas / contexto</label>
+      <textarea id="nr-rationale" placeholder="Quem participou, do que se tratou, qualquer info relevante"></textarea>
+    </div>
+    <div class="modal-field">
+      <label>Foto (opcional)</label>
+      <div class="photo-upload-area">
+        <label class="photo-upload-btn">
+          📷 Tirar / escolher foto
+          <input type="file" accept="image/*" id="nr-photo-input" style="display:none"
+            onchange="previewNewRecordPhoto(this.files)">
+        </label>
+        <span class="photo-count" id="nr-photo-status">Nenhuma foto</span>
+      </div>
+      <div id="nr-photo-preview" style="display:none;margin-top:6px;">
+        <div class="photo-thumb" style="max-width:120px;aspect-ratio:1;">
+          <img id="nr-photo-preview-img" src="" alt="Preview">
+          <button class="photo-remove" onclick="clearNewRecordPhoto()">×</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeNewRecord()">Cancelar</button>
+      <button class="btn primary" onclick="saveNewRecord()">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DADOS DA AGENDA
+// Estrutura: cada dia tem sessões. Cada sessão tem id único.
+// Horários são estimados com base no padrão do DAIS (keynotes
+// 9h, breakouts em slots de 40min entre 11h-17h30, etc.)
+// Ajuste conforme o catálogo oficial for liberado pela Databricks.
+// ============================================================
+
+// ============================================================
+// SUGESTÕES DO OSES — sessões curadas pelo Oses para o Baccala
+// Agrupadas por tema para facilitar a escolha. Cada sessão tem
+// link direto para o site oficial.
+// ============================================================
+
+const SUGGESTIONS = {
+  label: "Sugestões Sessions",
+  summary: "Lista curada pelo Oses de sessões com fit estratégico para o Baccala. Use como pré-filtro para encaixar nos slots livres da agenda. Clique no título para abrir a página oficial da sessão.",
+  groups: [
+    {
+      title: "🇧🇷 Cases brasileiros — relevância local imediata",
+      items: [
+        { id: "sg-br-xp", title: "How XP Drove a 72% Lift in Account Opens and 35% Activation Increase with Agentic CRM", company: "XP Investimentos (+ Hightouch)", theme: "Agentic CRM aplicado a onboarding e ativação de contas. Resultados duros: +72% abertura, +35% ativação. Lakehouse como engine de decisão em tempo real.", url: "https://www.databricks.com/dataaisummit/session/sponsored-hightouch-how-xp-drove-72-lift-account-opens-and-35-activation" },
+        { id: "sg-br-nu", title: "How Nubank Migrated to Databricks SQL Reducing Costs by 40% and Doubling Queries", company: "Nubank", theme: "Migração para Databricks SQL com 17k usuários, 40MM queries/mês. -40% custo, zero downtime em 12 meses. Referência direta para nossa jornada de SQL/governança.", url: "https://www.databricks.com/dataaisummit/session/how-nubank-migrated-databricks-sql-reducing-costs-40-and-doubling" }
+      ]
+    },
+    {
+      title: "🏦 Bancos e FSI — peers diretos",
+      items: [
+        { id: "sg-fsi-forum", title: "Financial Services Industry Forum", company: "Databricks + Robinhood (Vlad Tenev)", theme: "Fórum executivo de FSI com o CEO do Robinhood. Discussão de IA agentica com governança em ambiente regulado. Provavelmente um dos eventos de maior densidade C-level da semana.", url: "https://www.databricks.com/dataaisummit/session/financial-services-industry-forum" },
+        { id: "sg-fsi-blueprint", title: "Blueprint to Breakthrough: Activating Banking Analytics, AI, and Agentic Use Cases", company: "First Horizon Bank + Deloitte", theme: "Banco regional ativando casos agenticos via Genie + Data Marketplace governado. Modelo de pipeline priorizado de use cases.", url: "https://www.databricks.com/dataaisummit/session/blueprint-breakthrough-activating-banking-analytics-ai-and-agentic-use" },
+        { id: "sg-fsi-scaling", title: "Scaling Responsible AI and Powering Product Innovation in Banking and Payments", company: "Santander + Vantage Bank Texas", theme: "CFO do Santander Payments + CRO do Vantage Bank. Como bancos grandes escalam responsible AI mantendo controle regulatório.", url: "https://www.databricks.com/dataaisummit/session/scaling-responsible-ai-and-powering-product-innovation-banking-and" },
+        { id: "sg-fsi-gm", title: "Essential Ingredients to Successful Digital Data Transformation Program", company: "GM Financial", theme: "SVP da GM Financial sobre o lado humano da transformação: data strategy board, CoE, FinOps, SOX. Operating model — não só tech.", url: "https://www.databricks.com/dataaisummit/session/essential-ingredients-successful-digital-data-transformation-program" },
+        { id: "sg-fsi-gs", title: "Goldman Sachs' Fully-Interoperable Lakehouse With Iceberg", company: "Goldman Sachs", theme: "Plataforma Iceberg-first. Zero-copy sharing entre engines. Decisão arquitetural relevante para o debate Bronze/Iceberg que temos internamente.", url: "https://www.databricks.com/dataaisummit/session/goldman-sachs-fully-interoperable-lakehouse-iceberg" },
+        { id: "sg-fsi-nasdaq", title: "Weaving Data Into the Financial Fabric: How Nasdaq Uses Databricks to Power the Innovation Economy", company: "Nasdaq", theme: "Lakehouse corporativo único como single source of truth. AgentBricks + Databricks Apps para democratização governada.", url: "https://www.databricks.com/dataaisummit/session/weaving-data-financial-fabric-how-nasdaq-uses-databricks-power" }
+      ]
+    },
+    {
+      title: "🤖 IA Agentica em FSI — fit direto com nosso roadmap",
+      items: [
+        { id: "sg-ai-mastercard", title: "How Mastercard Turns Transaction Data Into Trusted Merchant Insights with AI", company: "Mastercard", theme: "Produto de IA agentico em ambiente regulado. Governança e quality control como aceleradores — não barreiras. Track record direto com nosso desafio.", url: "https://www.databricks.com/dataaisummit/session/how-mastercard-turns-transaction-data-trusted-merchant-insights-ai" },
+        { id: "sg-ai-worldbank", title: "Beyond Simple Q&A: Building an Agent Orchestrator for Enterprise Analytics", company: "World Bank", theme: "Multi-agent system com LangGraph orquestrando múltiplos Genie spaces + RAG + visualização. Paralelo conceitual com o Asimov.", url: "https://www.databricks.com/dataaisummit/session/beyond-simple-qa-building-agent-orchestrator-enterprise-analytics" },
+        { id: "sg-ai-waterfall", title: "Accelerating Investment Decisions with Specialized Claude Code", company: "Waterfall Asset Management (+ Prophecy)", theme: "Agente Claude Code para harmonização de dados não estruturados de loans. 93% de acurácia first-pass, caminhando para 100%. Padrão replicável em qualquer ingestão semi-estruturada nossa.", url: "https://www.databricks.com/dataaisummit/session/sponsored-prophecy-accelerating-investment-decisions-specialized-claude" },
+        { id: "sg-ai-mt", title: "Databricks for Banking ML: Accelerating Delivery with an AI-Enabled Platform", company: "M&T Bank (+ Deloitte)", theme: "Modernização de ML platform em banco regulado: governança, MLOps, migração de modelos legados de Treasury & Financial.", url: "https://www.databricks.com/dataaisummit/session/sponsored-deloitte-databricks-banking-ml-accelerating-delivery-ai" }
+      ]
+    },
+    {
+      title: "💳 Fraude e tempo real — pano de fundo de payments",
+      items: [
+        { id: "sg-fr-coinbase", title: "Right Features, Right Time: Modernizing Real-Time Fraud Feature Serving", company: "Coinbase", theme: "Feature platform de fraude em tempo real no Databricks. p99 <50ms, freshness 7x melhor, ~30% ganho de produtividade. Referência de arquitetura.", url: "https://www.databricks.com/dataaisummit/session/right-features-right-time-modernizing-real-time-fraud-feature-serving" },
+        { id: "sg-fr-checkout", title: "Real-Time ML Features for Payment Fraud: Architecture Patterns at Scale", company: "Checkout.com", theme: "Fraud em escala de bilhões de eventos. Real-Time Mode do Structured Streaming. +2% PR-AUC = milhões em fraude prevenida.", url: "https://www.databricks.com/dataaisummit/session/real-time-ml-features-payment-fraud-architecture-patterns-scale" }
+      ]
+    },
+    {
+      title: "💰 CFO e Finance — usar IA dentro do back-office",
+      items: [
+        { id: "sg-cfo-dbx", title: "How Databricks Uses Databricks to Run Its Own Finance Organization — and Why That Changes Everything", company: "Databricks (Office of the CFO)", theme: "Dogfooding. Como o CFO do Databricks usa o próprio produto para fechar mês, planejamento, SOX. Útil para conversa com a área financeira do banco.", url: "https://www.databricks.com/dataaisummit/session/how-databricks-uses-databricks-run-its-own-finance-organization-and-why" },
+        { id: "sg-cfo-ey", title: "The Future of Finance Is Now", company: "EY", theme: "Visão de transformação financeira em escala: FP&A, Controllership, Risco, Tax. Finance Data Office como construção organizacional.", url: "https://www.databricks.com/dataaisummit/session/sponsored-ey-future-finance-now" },
+        { id: "sg-cfo-nfcu", title: "Future-Proofing Finance: Modernizing Banking Data Platforms", company: "Navy Federal Credit Union (+ Deloitte)", theme: "Plataforma unificada com Unity Catalog + Agent Bricks. Lineage e governança como base para casos futuros de Finance + AI.", url: "https://www.databricks.com/dataaisummit/session/sponsored-deloitte-future-proofing-finance-modernizing-banking-data" }
+      ]
+    },
+    {
+      title: "📊 Plataforma, BI e governança",
+      items: [
+        { id: "sg-pl-aibi", title: "How to Turn Every Business User Into a Decision Maker With AI/BI and Databricks One", company: "JosueBogran.com / zeb.co + Databricks", theme: "Unity Catalog Metric Views + AI/BI + Genie + Databricks One. Blueprint de conversational analytics governado para usuários de negócio.", url: "https://www.databricks.com/dataaisummit/session/how-turn-every-business-user-decision-maker-aibi-and-databricks-one" },
+        { id: "sg-pl-bi", title: "Latest Innovations in BI and AI for Business Users", company: "Databricks", theme: "Sessão de produto Databricks: novidades de Genie, AI/BI Dashboards e agentic BI. Útil para entender o que está chegando.", url: "https://www.databricks.com/dataaisummit/session/latest-innovations-bi-and-ai-business-users" }
+      ]
+    },
+    {
+      title: "🛡️ Específicos — situacionais",
+      items: [
+        { id: "sg-sit-synth", title: "Generating Realistic, High-Fidelity Synthetic Financial Data on Databricks", company: "Deloitte", theme: "Dados sintéticos para acelerar inovação sem exposição de dados sensíveis. Útil se discutirmos a pauta de inovação em ambientes protegidos.", url: "https://www.databricks.com/dataaisummit/session/sponsored-deloitte-generating-realistic-high-fidelity-synthetic" },
+        { id: "sg-sit-ins", title: "Underwriting the Future: How Leading Insurers Turn Proprietary Data into Competitive Advantage", company: "First American, American Modern, Howden Group", theme: "Panel de seguradoras. Pode interessar pelo paralelo com a Porto Seguros (ecossistema) — modelo de operating com dados próprios.", url: "https://www.databricks.com/dataaisummit/session/underwriting-future-how-leading-insurers-turn-proprietary-data" }
+      ]
+    }
+  ]
+};
+
+const AGENDA = {
+  sunday: {
+    label: "Dom 14/jun",
+    sublabel: "Chegada",
+    summary: "Voo overnight desde GIG (sai sábado 13/06 às 21h, com escala em Atlanta). Pouso em SFO às 10h27 da manhã. Check-in W às 15h. Dia inteiro de adaptação ao fuso.",
+    sessions: [
+      { id: "s1", time: "10:27", duration: "", title: "✈️ Pouso em SFO — Delta 0693 (vindo de Atlanta)", type: "free", priority: "high", rationale: "<strong>Voo Delta 0693</strong> · vindo de ATL (escala) · localizador <strong>HY2UGH</strong><br>Origem: GIG → ATL (Delta 0060, sábado 13/06 21h) → SFO chegando dom 14/06 10:27.<br><br>Bagagem despachada: sim (23kg). Sair do aeroporto pode levar 1h30-2h (imigração + bagagem)." },
+      { id: "s1b", time: "12:00", duration: "1h", title: "🚕 Transfer SFO → W San Francisco", type: "free", priority: "mid", rationale: "Uber/Lyft: ~30 min em domingo. Trânsito leve. Custo estimado USD 40-60.<br>Hotel a ~150m do Moscone Center (5 min a pé)." },
+      { id: "s2", time: "15:00", duration: "", title: "🏨 Check-in no W San Francisco", type: "free", priority: "high", rationale: "<strong>W San Francisco</strong><br>3rd Street, 181 · São Francisco<br>Check-in: dom 14/06 às 15h<br>Check-out: qui 18/06 às 11h<br><br>Se chegar antes das 15h, deixar mala no concierge e fazer check-in depois. Hotel fica em frente ao Moscone — ideal pro evento." },
+      { id: "s3", time: "Tarde", duration: "", title: "Caminhada leve / luz solar", type: "free", priority: "mid", rationale: "Dica de fuso: <strong>não dormir agora</strong>. Caminhar 30-60 min ao ar livre ajuda a ressetar o relógio. Sugestões a pé do W: Yerba Buena Gardens (em frente), SF MOMA, Embarcadero." },
+      { id: "s4", time: "19:00", duration: "1h30", title: "🍽️ Jantar leve perto do hotel", type: "free", priority: "low", rationale: "Comer leve e cedo. Várias opções caminháveis na região do Moscone." },
+      { id: "s5", time: "21:00", duration: "", title: "Dormir cedo", type: "free", priority: "mid", rationale: "Segunda começa com agenda (reconhecimento do Moscone à tarde + jantar Indicium à noite). Dormir cedo no domingo é o que estabiliza a semana inteira." }
+    ]
+  },
+  preday: {
+    label: "Seg 15/jun",
+    sublabel: "Pre-day",
+    summary: "Dia opcional do evento (training, hackathon, meetups). Baccala chega sozinho — Oses só desembarca na terça. À noite, jantar com Indicium.",
+    sessions: [
+      { id: "p1", time: "Manhã", duration: "", title: "Manhã livre — ambientação", type: "free", priority: "low", rationale: "Recomendo passeio leve ou trabalho remoto no hotel. Nada formal antes do almoço." },
+      { id: "p2", time: "14:00", duration: "1h30", title: "Reconhecimento Moscone Center + retirada de credenciais", type: "meeting", priority: "mid", rationale: "Mapear salas das sessões de terça/quarta. Evita correria no primeiro dia oficial. Credencial pode ter fila — chegar cedo na janela." },
+      { id: "p3", time: "16:00", duration: "2h", title: "Welcome Reception / Meetups (oficial Databricks)", type: "networking", priority: "mid", rationale: "Networking informal de abertura. Foco: outros executivos de FSI e bancos LATAM presentes. Boa janela para sondar quem está aqui." },
+      { id: "p4", time: "19:30", duration: "2h30", title: "🍽️ Jantar com Indicium", type: "meeting", priority: "high", rationale: "<strong>Compromisso fechado.</strong> Baccala vai sozinho (Oses ainda em SP).<br><br><strong>Aguardando:</strong> nome e endereço do restaurante, horário exato, nome do contato Indicium, telefone para o caso de imprevisto.<br><br><em>Pauta sugerida a definir: posicionamento Indicium-PortoBank, projetos em andamento, oportunidades futuras.</em>" }
+    ]
+  },
+  tuesday: {
+    label: "Ter 16/jun",
+    sublabel: "Dia 1 oficial",
+    summary: "Abertura oficial. Keynote do Ali Ghodsi tradicionalmente traz os anúncios principais do ano. Oses desembarca em SF nesse dia — encontro no almoço.",
+    sessions: [
+      { id: "t1", time: "07:30", duration: "1h", title: "Café da manhã + leitura do press release do dia", type: "meal", priority: "mid", rationale: "Databricks geralmente publica blog post com anúncios às 6-7h PT. Ler ANTES do keynote pra contextualizar." },
+      { id: "t2", time: "09:00", duration: "2h", title: "🎤 KEYNOTE de abertura — Ali Ghodsi (CEO Databricks)", type: "keynote", priority: "high", rationale: "<strong>Imperdível.</strong> Anúncios de plataforma do ano. Implicações diretas para nossa stack: AgentBricks, Lakebase, evolução do Unity Catalog. Tomar notas para report executivo pós-evento." },
+      { id: "t3", time: "11:00", duration: "40min", title: "Sessão sugerida: A–Z of Unity Catalog Business Semantics", type: "breakout", priority: "high", rationale: "Governança semântica é fundação para os agentes que estamos rodando. Validar se o caminho do PortoBank está alinhado com a evolução do produto." },
+      { id: "t4", time: "12:00", duration: "1h30", title: "🤝 Almoço — primeiro encontro com Oses em SF", type: "meeting", priority: "high", rationale: "<strong>Oses chega nesse dia em SF.</strong> Primeiro alinhamento presencial da semana.<br><br>Pauta: (1) impressões do Baccala sobre a manhã/keynote, (2) prioridades dos próximos 2 dias, (3) confirmar agendas de meetings com Databricks, (4) ajustar narrativa do que será reportado para a diretoria.<br><br><em>Se voo do Oses atrasar, mover para janta ou quarta de manhã.</em>" },
+      { id: "t5", time: "14:00", duration: "40min", title: "Sessão sugerida: 0 to 100 AI/BI Apps in 120 Days (Alpura)", type: "breakout", priority: "high", rationale: "Case de scaling de Apps em ambiente corporativo. Diretamente comparável ao que estamos fazendo com Sala de IA e Asimov." },
+      { id: "t6", time: "15:00", duration: "40min", title: "[ slot livre — completar com catálogo ]", type: "breakout", priority: "low", rationale: "Buscar: cases de FSI / financial services. Atualizar quando o catálogo detalhado sair." },
+      { id: "t7", time: "16:00", duration: "1h", title: "🤝 Alinhamento com executivos Databricks", type: "meeting", priority: "high", rationale: "<strong>Agendar previamente via account exec.</strong> 1h dedicada.<br><br>Pauta: (1) roadmap conjunto PortoBank-Databricks, (2) posicionamento estratégico do banco como case, (3) candidatura dos 2 cases para speaker no Summit, (4) eventuais oportunidades de co-marketing.<br><br>Oses presente." },
+      { id: "t8", time: "17:30", duration: "1h", title: "Pausa / volta ao hotel", type: "free", priority: "low", rationale: "Decompressão antes do HH. Trocar de roupa se necessário." },
+      { id: "t9", time: "19:00", duration: "3h", title: "🌎 Happy Hour oficial LATAM (Databricks)", type: "networking", priority: "high", rationale: "<strong>Local:</strong> YBCA Forum + East Garden — 701 Mission Street, San Francisco, CA 94103 (a ~150m do W Hotel, em frente ao Moscone).<br><br><strong>Evento oficial LATAM.</strong> Networking concentrado com executivos da região — bancos brasileiros, fintechs, varejo, grandes corporativos.<br><br>Objetivos: (1) identificar peers de jornada de IA em FSI, (2) fortalecer relacionamento com o time Databricks LATAM, (3) eventual ponte com outros C-levels para benchmark.<br><br>Oses presente." }
+    ]
+  },
+  wednesday: {
+    label: "Qua 17/jun",
+    sublabel: "Dia 2",
+    summary: "Keynote técnico (Matei Zaharia / Reynold Xin tradicionalmente). Dia mais denso de breakouts. À noite, Summit Party oficial da Databricks.",
+    sessions: [
+      { id: "w1", time: "09:00", duration: "1h30", title: "🎤 KEYNOTE técnico — Matei Zaharia / Reynold Xin", type: "keynote", priority: "high", rationale: "Visão do CTO e Chief Architect. Mais técnico que o de terça, mas crítico para entender direção da plataforma (Spark, Iceberg, MLflow, Lakebase)." },
+      { id: "w2", time: "11:00", duration: "40min", title: "Sessão sugerida: Accelerating Monthly Financial Closing With Genie", type: "breakout", priority: "high", rationale: "Case de Genie aplicado a finanças. Conversa direta com o que queremos fazer no Risco/Financiamentos e o app que estamos construindo." },
+      { id: "w3", time: "12:00", duration: "1h", title: "🤝 Almoço com peer executive (sugestão: outro CIO/CDO de banco)", type: "meeting", priority: "high", rationale: "Identificar via account team: outros executivos brasileiros ou LATAM de FSI presentes. Pauta: benchmarking de jornada de IA." },
+      { id: "w4", time: "14:00", duration: "40min", title: "Sessão sugerida: 800TB, Zero Pipelines (Ensemble Health Partners)", type: "breakout", priority: "mid", rationale: "Case de escala com Lakebase. Vertical de saúde, mas a arquitetura de zero-ETL é transponível para nossa realidade." },
+      { id: "w5", time: "15:00", duration: "40min", title: "Sessão sugerida: A Unified Approach to Data Exfiltration Protection", type: "breakout", priority: "high", rationale: "Segurança em agentes é tema sensível com BACEN. Vale para conversa com áreas de Risco e Compliance no retorno." },
+      { id: "w6", time: "16:00", duration: "40min", title: "[ slot livre — completar com catálogo ]", type: "breakout", priority: "low", rationale: "Sugestão de busca: 'AI governance' ou 'agent observability'." },
+      { id: "w7", time: "17:00", duration: "1h", title: "Expo Hall (2ª passagem — agora com profundidade)", type: "networking", priority: "mid", rationale: "Conversas com booths mapeados na terça. Levar perguntas específicas, não 'me conta sobre o produto'." },
+      { id: "w8", time: "19:30", duration: "2h30", title: "🎉 Summit Party (oficial Databricks)", type: "networking", priority: "mid", rationale: "Evento social oficial. Aparecer faz parte. Não precisa ficar até o fim — voo é quinta cedo." },
+      { id: "w9", time: "22:00", duration: "", title: "🏨 Volta ao hotel + preparar mala", type: "free", priority: "high", rationale: "Voltar do Summit Party e deixar mala 100% pronta antes de dormir. Acordar quinta de manhã com tudo arrumado evita correria no check-out." }
+    ]
+  },
+  thursday: {
+    label: "Qui 18/jun",
+    sublabel: "Dia 3 — saída cedo",
+    summary: "⚠️ Voo de volta às 12h01. Manhã praticamente inteira consumida com check-out, transfer e check-in no SFO. Não dá pra agendar nada no evento depois das 8h30. Debrief contigo precisou ir pra quarta à noite.",
+    sessions: [
+      { id: "th0", time: "07:00", duration: "1h", title: "🥐 Café da manhã + arrumar mala", type: "free", priority: "mid", rationale: "Acordar cedo. Bagagem pronta antes do check-out." },
+      { id: "th1", time: "08:00", duration: "30min", title: "🏨 Check-out no W San Francisco", type: "meeting", priority: "high", rationale: "<strong>Check-out oficial: 11h.</strong> Mas vamos antes pra ter folga.<br>Sair do hotel até 8h45 no máximo." },
+      { id: "th2", time: "08:45", duration: "45min", title: "🚕 Transfer W → SFO", type: "free", priority: "high", rationale: "Uber/Lyft: 25-40 min dependendo do trânsito (horário de pico de quinta de manhã pode esticar)." },
+      { id: "th3", time: "09:30", duration: "2h30", title: "✈️ Check-in voo de volta — American 2565 → MIA", type: "free", priority: "high", rationale: "<strong>Voo American 2565</strong> · SFO 12:01 → MIA 20:47<br>Localizador <strong>LKETIC</strong> · bagagem despachada 23kg<br><br>Estar no SFO 2h30 antes (recomendado pra voo doméstico longo com despacho de bagagem). Vai dar tempo. Não atrase." },
+      { id: "th4", time: "12:01", duration: "8h46", title: "🛫 Decolagem SFO → MIA", type: "free", priority: "mid", rationale: "Voo doméstico longo. Chegada em Miami 20:47. Conexão de 2h08 lá." },
+      { id: "th5", time: "22:55", duration: "9h25", title: "🛫 Conexão MIA → GIG (American 0905)", type: "free", priority: "low", rationale: "Decolagem MIA 22:55 · Pouso GIG sexta 19/06 às 08:20.<br>Voo de aproximadamente 9h25." }
+    ]
+  }
+};
+
+// ============================================================
+// LÓGICA
+// ============================================================
+
+let state = JSON.parse(localStorage.getItem('dais_baccala_v1') || '{}');
+let activeDay = 'sunday';
+let activeFilter = 'all';
+
+// ============================================================
+// WIDGET DE CLIMA — Open-Meteo (gratuita, sem chave de API)
+// San Francisco · atualiza on-load
+// ============================================================
+
+const WMO_CODES = {
+  0:  { icon: '☀️', desc: 'Céu limpo' },
+  1:  { icon: '🌤️', desc: 'Quase limpo' },
+  2:  { icon: '⛅', desc: 'Parcialmente nublado' },
+  3:  { icon: '☁️', desc: 'Nublado' },
+  45: { icon: '🌫️', desc: 'Neblina' },
+  48: { icon: '🌫️', desc: 'Neblina gelada' },
+  51: { icon: '🌦️', desc: 'Garoa leve' },
+  53: { icon: '🌦️', desc: 'Garoa' },
+  55: { icon: '🌧️', desc: 'Garoa forte' },
+  61: { icon: '🌧️', desc: 'Chuva leve' },
+  63: { icon: '🌧️', desc: 'Chuva' },
+  65: { icon: '🌧️', desc: 'Chuva forte' },
+  71: { icon: '🌨️', desc: 'Neve leve' },
+  80: { icon: '🌦️', desc: 'Pancadas leves' },
+  81: { icon: '🌧️', desc: 'Pancadas' },
+  82: { icon: '⛈️', desc: 'Pancadas fortes' },
+  95: { icon: '⛈️', desc: 'Trovoada' }
+};
+
+function getWeatherInfo(code) {
+  return WMO_CODES[code] || { icon: '🌡️', desc: '—' };
+}
+
+function formatDayLabel(dateStr) {
+  // dateStr no formato YYYY-MM-DD
+  const d = new Date(dateStr + 'T12:00:00');
+  const dias = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  return `${dias[d.getDay()]} ${d.getDate()}`;
+}
+
+async function loadWeather() {
+  // SF: lat 37.7749, lon -122.4194
+  const url = 'https://api.open-meteo.com/v1/forecast' +
+    '?latitude=37.7749&longitude=-122.4194' +
+    '&current=temperature_2m,weather_code,relative_humidity_2m' +
+    '&daily=weather_code,temperature_2m_max,temperature_2m_min' +
+    '&temperature_unit=celsius' +
+    '&timezone=America/Los_Angeles' +
+    '&forecast_days=7';
+
+  const widgetEl = document.getElementById('weather-widget');
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('API ' + res.status);
+    const data = await res.json();
+    renderWeather(data, widgetEl);
+  } catch (err) {
+    widgetEl.innerHTML = `<div class="weather-error">⚠️ Clima indisponível<br><span style="font-size:10px;">${err.message || 'sem conexão'}</span></div>`;
+  }
+}
+
+function renderWeather(data, el) {
+  const current = data.current;
+  const daily = data.daily;
+  const currentInfo = getWeatherInfo(current.weather_code);
+
+  if (typeof updateMiniWeather === 'function') {
+    updateMiniWeather(currentInfo.icon, current.temperature_2m);
+  }
+
+  // Filtrar previsão para os 5 dias da estadia (14-18 jun)
+  // Se a data atual já passou desses dias, mostra os próximos 5 disponíveis
+  const stayDates = ['2026-06-14','2026-06-15','2026-06-16','2026-06-17','2026-06-18'];
+  const allDates = daily.time;
+  const allMax = daily.temperature_2m_max;
+  const allMin = daily.temperature_2m_min;
+  const allCodes = daily.weather_code;
+
+  let forecastDays = [];
+  // Tenta encontrar os dias da estadia no array retornado
+  for (const stayDate of stayDates) {
+    const idx = allDates.indexOf(stayDate);
+    if (idx !== -1) {
+      forecastDays.push({
+        date: stayDate,
+        max: allMax[idx],
+        min: allMin[idx],
+        code: allCodes[idx]
+      });
+    }
+  }
+  // Se nenhum dia da estadia veio (provavelmente porque o evento ainda está longe),
+  // mostra os próximos 5 dias retornados pela API
+  if (forecastDays.length === 0) {
+    for (let i = 0; i < Math.min(5, allDates.length); i++) {
+      forecastDays.push({
+        date: allDates[i],
+        max: allMax[i],
+        min: allMin[i],
+        code: allCodes[i]
+      });
+    }
+  }
+
+  const now = new Date();
+  const updatedAt = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+  el.innerHTML = `
+    <div class="weather-current">
+      <div class="weather-icon">${currentInfo.icon}</div>
+      <div class="weather-temp">${Math.round(current.temperature_2m)}°</div>
+      <div class="weather-meta">
+        <div class="weather-location">San Francisco</div>
+        <div class="weather-cond">${currentInfo.desc} · ${current.relative_humidity_2m}% umidade</div>
+      </div>
+    </div>
+    <div class="weather-forecast">
+      ${forecastDays.map(d => {
+        const info = getWeatherInfo(d.code);
+        return `
+          <div class="weather-day" title="${info.desc}">
+            <div class="weather-day-label">${formatDayLabel(d.date)}</div>
+            <div class="weather-day-icon">${info.icon}</div>
+            <div class="weather-day-temp">
+              <span class="max">${Math.round(d.max)}°</span>
+              <span class="min">/${Math.round(d.min)}°</span>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+    <div class="weather-updated">Atualizado ${updatedAt} · Open-Meteo</div>
+  `;
+}
+
+function saveState() {
+  try {
+    localStorage.setItem('dais_baccala_v1', JSON.stringify(state));
+    checkStorageQuota();
+  } catch (e) {
+    if (e.name === 'QuotaExceededError' || e.code === 22) {
+      alert('⚠️ Armazenamento cheio! Exporte o progresso (botão Salvar progresso) e remova algumas fotos antigas. Sua última alteração não foi salva.');
+    } else {
+      console.error('Erro ao salvar:', e);
+    }
+  }
+  renderStats();
+}
+
+function checkStorageQuota() {
+  try {
+    const used = new Blob([JSON.stringify(state)]).size;
+    const limitEstimate = 5 * 1024 * 1024; // 5MB, conservador
+    const pct = used / limitEstimate;
+    const warningEl = document.getElementById('storageWarning');
+    if (!warningEl) return;
+    if (pct > 0.8) {
+      warningEl.style.display = 'block';
+      warningEl.innerHTML = `⚠️ Armazenamento em <strong>${Math.round(pct*100)}%</strong> da capacidade estimada (${(used/1024/1024).toFixed(1)}MB). Recomendado exportar o progresso e considerar limpar fotos antigas.
+        <div class="actions">
+          <button onclick="exportData()">Exportar agora</button>
+          <button onclick="document.getElementById('storageWarning').style.display='none'">Dispensar</button>
+        </div>`;
+    } else {
+      warningEl.style.display = 'none';
+    }
+  } catch (e) { /* ignore */ }
+}
+
+function getSessionState(id) {
+  return state[id] || { done: false, starred: false, notes: '', richNotes: '', photos: [], externalComments: [] };
+}
+
+function setSessionState(id, patch) {
+  state[id] = { ...getSessionState(id), ...patch };
+  saveState();
+}
+
+function renderTabs() {
+  // Tabs removidas — navegação acontece pelos cards de dia (renderStats)
+}
+
+function switchDay(key) {
+  activeDay = key;
+  renderTabs();
+  renderContent();
+  renderStats();
+}
+
+function renderContent() {
+  if (activeDay === 'suggestions') {
+    renderSuggestions();
+    return;
+  }
+  const day = AGENDA[activeDay];
+  const contentEl = document.getElementById('content');
+  contentEl.innerHTML = `
+    <div class="day-content active">
+      <div class="day-header">
+        <div class="day-title">${day.label} · ${day.sublabel}</div>
+        <div class="day-summary">${day.summary}</div>
+      </div>
+      <div class="filters">
+        <span class="filter-chip ${activeFilter==='all'?'active':''}" onclick="setFilter('all')">Todas</span>
+        <span class="filter-chip ${activeFilter==='high'?'active':''}" onclick="setFilter('high')">Prioridade alta</span>
+        <span class="filter-chip ${activeFilter==='keynote'?'active':''}" onclick="setFilter('keynote')">Keynotes</span>
+        <span class="filter-chip ${activeFilter==='breakout'?'active':''}" onclick="setFilter('breakout')">Sessões</span>
+        <span class="filter-chip ${activeFilter==='meeting'?'active':''}" onclick="setFilter('meeting')">Meetings</span>
+        <span class="filter-chip ${activeFilter==='networking'?'active':''}" onclick="setFilter('networking')">Networking</span>
+      </div>
+      <div id="sessions">${renderSessions(day.sessions)}</div>
+    </div>
+  `;
+}
+
+function setFilter(f) {
+  activeFilter = f;
+  renderContent();
+}
+
+function renderSessions(sessions) {
+  const filtered = sessions.filter(s => {
+    if (activeFilter === 'all') return true;
+    if (activeFilter === 'high') return s.priority === 'high';
+    return s.type === activeFilter;
+  });
+  if (filtered.length === 0) return '<div style="color:var(--text-dim);padding:20px;text-align:center">Nenhuma sessão neste filtro.</div>';
+  return filtered.map(s => renderSession(s)).join('');
+}
+
+function renderSession(s) {
+  const st = getSessionState(s.id);
+  const typeLabels = {
+    keynote: 'Keynote',
+    breakout: 'Sessão',
+    meeting: 'Meeting',
+    networking: 'Networking',
+    meal: 'Refeição',
+    free: 'Livre'
+  };
+  const hasRichContent = (st.richNotes && st.richNotes.trim()) || (st.photos && st.photos.length > 0) || (st.externalComments && st.externalComments.length > 0);
+  const userAddedBadge = s.userAdded ? '<span class="user-added-badge">adicionado</span>' : '';
+  return `
+    <div class="session priority-${s.priority} ${st.done ? 'done' : ''} ${s.userAdded ? 'user-added' : ''}" data-id="${s.id}">
+      <div class="session-row">
+        <div class="session-time">
+          ${s.time}
+          ${s.duration ? `<span class="duration">${s.duration}</span>` : ''}
+        </div>
+        <div class="session-main">
+          <div class="session-title">${s.title}${userAddedBadge}</div>
+          <div class="session-meta">
+            <span class="tag type-${s.type}">${typeLabels[s.type] || s.type}</span>
+          </div>
+          ${s.rationale ? `<div class="session-rationale">${s.rationale}</div>` : ''}
+          <textarea class="notes-area ${st.notes ? 'visible' : ''}"
+            placeholder="Anotação rápida..."
+            onchange="setSessionState('${s.id}', {notes: this.value})"
+          >${st.notes || ''}</textarea>
+          ${renderCommentBlock(s.id, hasRichContent)}
+        </div>
+        <div class="session-actions">
+          <button class="action-btn ${st.done?'active':''}" title="Marcar como concluído"
+            onclick="toggleDone('${s.id}')">✓</button>
+          <button class="action-btn" title="Anotação rápida"
+            onclick="toggleNotes('${s.id}')">✎</button>
+          <button class="action-btn ${hasRichContent?'active':''}" title="Comentários e fotos"
+            onclick="toggleCommentBlock('${s.id}')">📝</button>
+          ${s.userAdded ? `<button class="action-btn" title="Excluir registro" onclick="deleteUserRecord('${s.id}')">🗑</button>` : ''}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function toggleDone(id) {
+  const st = getSessionState(id);
+  setSessionState(id, { done: !st.done });
+  renderContent();
+}
+
+function toggleNotes(id) {
+  const el = document.querySelector(`[data-id="${id}"] .notes-area`);
+  if (el) {
+    el.classList.toggle('visible');
+    if (el.classList.contains('visible')) el.focus();
+  }
+}
+
+function renderSuggestions() {
+  const contentEl = document.getElementById('content');
+  const totalCount = SUGGESTIONS.groups.reduce((acc, g) => acc + g.items.length, 0);
+  contentEl.innerHTML = `
+    <div class="day-content active">
+      <div class="day-header">
+        <div class="day-title">💼 Sugestões Sessions</div>
+        <div class="day-summary">${SUGGESTIONS.summary}</div>
+        <div style="margin-top:8px;font-size:12px;color:var(--text-dim);">${totalCount} sessões em ${SUGGESTIONS.groups.length} grupos temáticos</div>
+      </div>
+      ${SUGGESTIONS.groups.map(g => renderSuggestionGroup(g)).join('')}
+    </div>
+  `;
+}
+
+function renderSuggestionGroup(group) {
+  return `
+    <div class="suggestion-group">
+      <div class="suggestion-group-title">${group.title} <span style="color:var(--text-dim);font-weight:400;font-size:12px;">· ${group.items.length}</span></div>
+      ${group.items.map(item => renderSuggestionItem(item)).join('')}
+    </div>
+  `;
+}
+
+function renderSuggestionItem(item) {
+  const st = getSessionState(item.id);
+  const hasRichContent = (st.richNotes && st.richNotes.trim()) || (st.photos && st.photos.length > 0) || (st.externalComments && st.externalComments.length > 0);
+  return `
+    <div class="suggestion-card ${st.done ? 'done' : ''} ${st.starred ? 'starred' : ''}" data-id="${item.id}">
+      <div class="suggestion-header">
+        <a href="${item.url}" target="_blank" rel="noopener" class="suggestion-title">
+          ${item.title}
+          <span class="suggestion-external">↗</span>
+        </a>
+        <div class="suggestion-actions">
+          <button class="action-btn ${st.starred?'active':''}" title="Marcar como favorito"
+            onclick="toggleStar('${item.id}')">★</button>
+          <button class="action-btn ${st.done?'active':''}" title="Marcar como assistido"
+            onclick="toggleDone('${item.id}'); renderSuggestions();">✓</button>
+          <button class="action-btn" title="Anotação rápida"
+            onclick="toggleNotes('${item.id}')">✎</button>
+          <button class="action-btn ${hasRichContent?'active':''}" title="Comentários e fotos"
+            onclick="toggleCommentBlock('${item.id}')">📝</button>
+        </div>
+      </div>
+      <div class="suggestion-company">${item.company}</div>
+      <div class="suggestion-theme">${item.theme}</div>
+      <textarea class="notes-area ${st.notes ? 'visible' : ''}"
+        placeholder="Anotação rápida..."
+        onchange="setSessionState('${item.id}', {notes: this.value})"
+      >${st.notes || ''}</textarea>
+      ${renderCommentBlock(item.id, hasRichContent)}
+    </div>
+  `;
+}
+
+function toggleStar(id) {
+  const st = getSessionState(id);
+  setSessionState(id, { starred: !st.starred });
+  renderSuggestions();
+}
+
+function renderStats() {
+  const suggestionItems = SUGGESTIONS.groups.flatMap(g => g.items);
+  const starredSuggestions = suggestionItems.filter(s => getSessionState(s.id).starred).length;
+
+  const dayCards = Object.entries(AGENDA).map(([key, day]) => {
+    const total = day.sessions.length;
+    const high = day.sessions.filter(s => s.priority === 'high').length;
+    const done = day.sessions.filter(s => getSessionState(s.id).done).length;
+    const isActive = key === activeDay;
+    return `
+      <div class="stat day-stat ${isActive ? 'active' : ''}" onclick="switchDay('${key}')">
+        <div class="stat-label">${day.label}</div>
+        <div class="stat-value">${total}<span class="stat-sub">compromissos</span></div>
+        <div class="stat-meta">
+          <span title="Prioridade alta"><span class="dot high"></span>${high} alta</span>
+          <span title="Concluídos"><span class="dot done"></span>${done} feitos</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const suggestionsCard = `
+    <div class="stat day-stat suggestion-stat ${activeDay === 'suggestions' ? 'active' : ''}" onclick="switchDay('suggestions')">
+      <div class="stat-label">💼 Sugestões Sessions</div>
+      <div class="stat-value">${suggestionItems.length}<span class="stat-sub">sessões</span></div>
+      <div class="stat-meta">
+        <span title="Favoritas"><span class="dot star"></span>${starredSuggestions} favoritas</span>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('stats').innerHTML = dayCards + suggestionsCard;
+}
+
+function exportData() {
+  const data = {
+    exported_at: new Date().toISOString(),
+    user: 'Baccala — DAIS 2026',
+    state: state
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `dais2026_baccala_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function loadData() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        state = data.state || data;
+        saveState();
+        renderContent();
+        alert('Progresso carregado.');
+      } catch(err) { alert('Arquivo inválido.'); }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function resetAll() {
+  if (confirm('Resetar todas as marcações e notas?')) {
+    state = {};
+    saveState();
+    renderContent();
+  }
+}
+
+// ============================================================
+// COMMENT BLOCK (richNotes + photos + external comments)
+// ============================================================
+
+function renderCommentBlock(id, isOpen) {
+  const st = getSessionState(id);
+  const photos = st.photos || [];
+  const external = st.externalComments || [];
+  return `
+    <div class="comment-block ${isOpen ? 'visible' : ''}" data-comment-id="${id}">
+      <div class="comment-block-label">📝 Comentários da sessão</div>
+      <textarea
+        placeholder="O que foi discutido, principais takeaways, insights aplicáveis ao banco..."
+        onchange="setSessionState('${id}', {richNotes: this.value})"
+      >${st.richNotes || ''}</textarea>
+      <div class="photo-upload-area">
+        <label class="photo-upload-btn">
+          📷 Adicionar foto
+          <input type="file" accept="image/*" multiple style="display:none"
+            onchange="handlePhotoUpload('${id}', this.files)">
+        </label>
+        <span class="photo-count">${photos.length}/10 foto(s)</span>
+      </div>
+      ${photos.length > 0 ? `
+        <div class="photo-thumbs">
+          ${photos.map((p, idx) => `
+            <div class="photo-thumb" onclick="viewPhoto('${id}', ${idx})">
+              <img src="${p.data}" alt="Foto ${idx+1}">
+              <button class="photo-remove" onclick="event.stopPropagation(); removePhoto('${id}', ${idx})">×</button>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+      ${external.length > 0 ? external.map(ec => `
+        <div class="external-comment">
+          <div class="external-comment-author">💬 ${ec.author}</div>
+          <div>${(ec.richNotes || ec.notes || '').replace(/\n/g, '<br>')}</div>
+        </div>
+      `).join('') : ''}
+    </div>
+  `;
+}
+
+function toggleCommentBlock(id) {
+  const el = document.querySelector(`.comment-block[data-comment-id="${id}"]`);
+  if (el) {
+    el.classList.toggle('visible');
+    if (el.classList.contains('visible')) {
+      el.querySelector('textarea')?.focus();
+    }
+  }
+}
+
+// ============================================================
+// PHOTO UPLOAD (com compressão para caber no localStorage)
+// ============================================================
+
+async function handlePhotoUpload(id, files) {
+  if (!files || files.length === 0) return;
+  const st = getSessionState(id);
+  const existing = st.photos || [];
+  const room = 10 - existing.length;
+  if (room <= 0) {
+    alert('⚠️ Limite de 10 fotos por sessão atingido.');
+    return;
+  }
+  const toProcess = Array.from(files).slice(0, room);
+  if (toProcess.length < files.length) {
+    alert(`Só cabem mais ${room} fotos. As ${files.length - room} extras foram ignoradas.`);
+  }
+
+  const compressed = [];
+  for (const f of toProcess) {
+    try {
+      const data = await compressImage(f);
+      compressed.push({
+        name: f.name,
+        added_at: new Date().toISOString(),
+        data: data
+      });
+    } catch (e) {
+      console.error('Erro ao processar', f.name, e);
+    }
+  }
+  setSessionState(id, { photos: [...existing, ...compressed] });
+  // Re-render só o bloco para refletir mudança
+  if (activeDay === 'suggestions') renderSuggestions();
+  else renderContent();
+}
+
+function compressImage(file, maxWidth = 1200, quality = 0.75) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const ratio = Math.min(1, maxWidth / img.width);
+        const w = Math.round(img.width * ratio);
+        const h = Math.round(img.height * ratio);
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        try {
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        } catch (err) { reject(err); }
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function removePhoto(id, idx) {
+  if (!confirm('Remover essa foto?')) return;
+  const st = getSessionState(id);
+  const photos = [...(st.photos || [])];
+  photos.splice(idx, 1);
+  setSessionState(id, { photos });
+  if (activeDay === 'suggestions') renderSuggestions();
+  else renderContent();
+}
+
+function viewPhoto(id, idx) {
+  const st = getSessionState(id);
+  const photo = st.photos?.[idx];
+  if (!photo) return;
+  // Abrir em nova aba como preview
+  const w = window.open();
+  if (w) w.document.write(`<title>${photo.name}</title><body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;min-height:100vh;"><img src="${photo.data}" style="max-width:100%;max-height:100vh;"></body>`);
+}
+
+// ============================================================
+// NOVO REGISTRO (sessão extra, reunião, observação)
+// ============================================================
+
+const USER_RECORDS_KEY = 'dais_baccala_user_records';
+let userRecords = JSON.parse(localStorage.getItem(USER_RECORDS_KEY) || '[]');
+
+function saveUserRecords() {
+  localStorage.setItem(USER_RECORDS_KEY, JSON.stringify(userRecords));
+  rebuildAgendaWithUserRecords();
+}
+
+function rebuildAgendaWithUserRecords() {
+  // Limpa registros antigos do usuário
+  Object.values(AGENDA).forEach(day => {
+    day.sessions = day.sessions.filter(s => !s.userAdded);
+  });
+  // Adiciona os atuais
+  userRecords.forEach(rec => {
+    if (AGENDA[rec.day]) {
+      AGENDA[rec.day].sessions.push({
+        id: rec.id,
+        time: rec.time || '—',
+        duration: '',
+        title: rec.title,
+        type: rec.type,
+        priority: 'mid',
+        rationale: rec.rationale || '',
+        userAdded: true
+      });
+    }
+  });
+  renderContent();
+  renderStats();
+}
+
+let pendingNewRecordPhoto = null;
+
+function openNewRecord() {
+  const modal = document.getElementById('newRecordModal');
+  const daySel = document.getElementById('nr-day');
+  daySel.innerHTML = Object.entries(AGENDA).map(([k, d]) =>
+    `<option value="${k}" ${k === activeDay ? 'selected' : ''}>${d.label} — ${d.sublabel}</option>`
+  ).join('');
+  document.getElementById('nr-time').value = '';
+  document.getElementById('nr-title').value = '';
+  document.getElementById('nr-rationale').value = '';
+  clearNewRecordPhoto();
+  modal.classList.add('visible');
+}
+
+async function previewNewRecordPhoto(files) {
+  if (!files || files.length === 0) return;
+  const file = files[0];
+  const statusEl = document.getElementById('nr-photo-status');
+  statusEl.textContent = 'Processando...';
+  try {
+    const data = await compressImage(file);
+    pendingNewRecordPhoto = {
+      name: file.name,
+      added_at: new Date().toISOString(),
+      data: data
+    };
+    document.getElementById('nr-photo-preview-img').src = data;
+    document.getElementById('nr-photo-preview').style.display = 'block';
+    statusEl.textContent = '✓ Foto pronta';
+  } catch (e) {
+    statusEl.textContent = '⚠️ Erro ao processar foto';
+    console.error(e);
+  }
+}
+
+function clearNewRecordPhoto() {
+  pendingNewRecordPhoto = null;
+  const input = document.getElementById('nr-photo-input');
+  if (input) input.value = '';
+  const preview = document.getElementById('nr-photo-preview');
+  if (preview) preview.style.display = 'none';
+  const status = document.getElementById('nr-photo-status');
+  if (status) status.textContent = 'Nenhuma foto';
+}
+
+function closeNewRecord() {
+  document.getElementById('newRecordModal').classList.remove('visible');
+}
+
+function saveNewRecord() {
+  const day = document.getElementById('nr-day').value;
+  const type = document.getElementById('nr-type').value;
+  const time = document.getElementById('nr-time').value.trim();
+  const title = document.getElementById('nr-title').value.trim();
+  const rationale = document.getElementById('nr-rationale').value.trim();
+  if (!title) {
+    alert('Título é obrigatório.');
+    return;
+  }
+  const id = 'user-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
+  userRecords.push({ id, day, type, time, title, rationale });
+  // Se tem foto pendente, salva no state do novo registro
+  if (pendingNewRecordPhoto) {
+    state[id] = { ...getSessionState(id), photos: [pendingNewRecordPhoto] };
+    saveState();
+  }
+  saveUserRecords();
+  closeNewRecord();
+  activeDay = day;
+  renderContent();
+  renderStats();
+}
+
+function deleteUserRecord(id) {
+  if (!confirm('Excluir esse registro?')) return;
+  userRecords = userRecords.filter(r => r.id !== id);
+  delete state[id];
+  saveState();
+  saveUserRecords();
+}
+
+// ============================================================
+// EXPORT / IMPORT
+// ============================================================
+
+function exportData() {
+  const data = {
+    exported_at: new Date().toISOString(),
+    user: prompt('Quem está exportando? (ex: Baccala, Oses) — será usado para identificar seus comentários ao mesclar com outra pessoa.', 'Baccala') || 'Anônimo',
+    state: state,
+    userRecords: userRecords
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `dais2026_${data.user.toLowerCase()}_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function importComments() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        const author = data.user || 'Outro';
+        const otherState = data.state || {};
+        let mergedCount = 0;
+        // Para cada item no estado do outro, anexa como comentário externo
+        Object.entries(otherState).forEach(([id, otherSt]) => {
+          const hasContent = (otherSt.richNotes && otherSt.richNotes.trim()) ||
+                            (otherSt.notes && otherSt.notes.trim());
+          if (!hasContent) return;
+          const myState = getSessionState(id);
+          const externalComments = [...(myState.externalComments || [])];
+          // Evita duplicar se já importou desse autor antes
+          const existingIdx = externalComments.findIndex(ec => ec.author === author);
+          const newComment = {
+            author,
+            notes: otherSt.notes || '',
+            richNotes: otherSt.richNotes || '',
+            imported_at: new Date().toISOString()
+          };
+          if (existingIdx >= 0) externalComments[existingIdx] = newComment;
+          else externalComments.push(newComment);
+          state[id] = { ...myState, externalComments };
+          mergedCount++;
+        });
+        // Importa user records se vierem
+        if (data.userRecords && Array.isArray(data.userRecords)) {
+          let importedRecords = 0;
+          data.userRecords.forEach(rec => {
+            const exists = userRecords.find(r => r.id === rec.id);
+            if (!exists) {
+              userRecords.push({ ...rec, importedFrom: author });
+              importedRecords++;
+            }
+          });
+          if (importedRecords > 0) saveUserRecords();
+        }
+        saveState();
+        renderContent();
+        alert(`✅ Importado: ${mergedCount} sessões com comentários de ${author}.`);
+      } catch(err) {
+        alert('Arquivo inválido: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function exportReport() {
+  const lines = [];
+  lines.push(`# Relatório DAIS 2026 — Highlights`);
+  lines.push(``);
+  lines.push(`*Gerado em ${new Date().toLocaleString('pt-BR')}*`);
+  lines.push(``);
+  lines.push(`---`);
+  lines.push(``);
+
+  // Por dia
+  Object.entries(AGENDA).forEach(([key, day]) => {
+    const sessionsWithContent = day.sessions.filter(s => {
+      const st = getSessionState(s.id);
+      return st.done || (st.notes && st.notes.trim()) || (st.richNotes && st.richNotes.trim()) ||
+             (st.photos && st.photos.length > 0) || (st.externalComments && st.externalComments.length > 0);
+    });
+    if (sessionsWithContent.length === 0) return;
+    lines.push(`## ${day.label} — ${day.sublabel}`);
+    lines.push(``);
+    sessionsWithContent.forEach(s => {
+      const st = getSessionState(s.id);
+      lines.push(`### ${s.time} — ${s.title}${s.userAdded ? ' *(adicionado)*' : ''}`);
+      if (st.done) lines.push(`✓ Concluído`);
+      if (st.notes && st.notes.trim()) {
+        lines.push(``);
+        lines.push(`**Nota rápida:** ${st.notes}`);
+      }
+      if (st.richNotes && st.richNotes.trim()) {
+        lines.push(``);
+        lines.push(`**Comentários:**`);
+        lines.push(``);
+        lines.push(st.richNotes);
+      }
+      if (st.photos && st.photos.length > 0) {
+        lines.push(``);
+        lines.push(`**Fotos:** ${st.photos.length} anexada(s)`);
+      }
+      if (st.externalComments && st.externalComments.length > 0) {
+        st.externalComments.forEach(ec => {
+          lines.push(``);
+          lines.push(`**Comentário de ${ec.author}:**`);
+          lines.push(``);
+          lines.push(ec.richNotes || ec.notes || '');
+        });
+      }
+      lines.push(``);
+      lines.push(`---`);
+      lines.push(``);
+    });
+  });
+
+  // Sessões sugeridas com conteúdo
+  const sugWithContent = SUGGESTIONS.groups.flatMap(g => g.items.map(i => ({...i, group: g.title})))
+    .filter(item => {
+      const st = getSessionState(item.id);
+      return st.done || st.starred || (st.notes && st.notes.trim()) || (st.richNotes && st.richNotes.trim()) ||
+             (st.photos && st.photos.length > 0) || (st.externalComments && st.externalComments.length > 0);
+    });
+  if (sugWithContent.length > 0) {
+    lines.push(`## Sessões sugeridas — registros`);
+    lines.push(``);
+    sugWithContent.forEach(item => {
+      const st = getSessionState(item.id);
+      lines.push(`### ${item.title}`);
+      lines.push(`*${item.company} · ${item.group}*`);
+      lines.push(``);
+      lines.push(`[Página oficial](${item.url})`);
+      if (st.starred) lines.push(`★ Favorita`);
+      if (st.done) lines.push(`✓ Assistida`);
+      if (st.notes && st.notes.trim()) {
+        lines.push(``);
+        lines.push(`**Nota rápida:** ${st.notes}`);
+      }
+      if (st.richNotes && st.richNotes.trim()) {
+        lines.push(``);
+        lines.push(`**Comentários:**`);
+        lines.push(``);
+        lines.push(st.richNotes);
+      }
+      if (st.photos && st.photos.length > 0) {
+        lines.push(``);
+        lines.push(`**Fotos:** ${st.photos.length} anexada(s)`);
+      }
+      if (st.externalComments && st.externalComments.length > 0) {
+        st.externalComments.forEach(ec => {
+          lines.push(``);
+          lines.push(`**Comentário de ${ec.author}:**`);
+          lines.push(``);
+          lines.push(ec.richNotes || ec.notes || '');
+        });
+      }
+      lines.push(``);
+      lines.push(`---`);
+      lines.push(``);
+    });
+  }
+
+  const md = lines.join('\n');
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `dais2026_relatorio_${new Date().toISOString().slice(0,10)}.md`;
+  a.click();
+}
+
+// ============================================================
+// THEME TOGGLE
+// ============================================================
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('dais_theme', theme);
+  const btn = document.getElementById('themeBtn');
+  if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+}
+
+// ============================================================
+// MOBILE — funções de UI especificas
+// ============================================================
+
+function toggleHeaderInfo() {
+  const el = document.getElementById('headerRight');
+  if (el) el.classList.toggle('visible');
+}
+
+function toggleToolbarMenu(event) {
+  event?.stopPropagation();
+  const menu = document.getElementById('toolbarMenu');
+  if (menu) menu.classList.toggle('visible');
+}
+
+function closeToolbarMenu() {
+  const menu = document.getElementById('toolbarMenu');
+  if (menu) menu.classList.remove('visible');
+}
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.toolbar-more')) {
+    closeToolbarMenu();
+  }
+});
+
+function updateMiniWeather(icon, temp) {
+  const el = document.getElementById('weather-mini');
+  if (!el) return;
+  const iconEl = el.querySelector('.weather-icon');
+  const tempEl = el.querySelector('.temp');
+  if (iconEl) iconEl.textContent = icon;
+  if (tempEl) tempEl.textContent = temp != null ? Math.round(temp) + '°' : '—';
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'dark';
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+}
+
+
+renderTabs();
+applyTheme(localStorage.getItem('dais_theme') || 'dark');
+rebuildAgendaWithUserRecords();
+loadWeather();
+checkStorageQuota();
+</script>
+</body>
+</html>
