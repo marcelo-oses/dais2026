@@ -986,6 +986,56 @@
     .day-content { display: block !important; page-break-after: always; }
     .session { background: white; border: 1px solid #ccc; }
   }
+
+  .app-link-btn {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .app-link-btn:hover {
+    border-color: var(--accent);
+    background: var(--panel-2);
+  }
+  .app-link-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.15s;
+    min-width: 200px;
+  }
+  .app-link-card:hover {
+    border-color: var(--accent);
+    background: var(--panel-2);
+  }
+  .app-link-card .app-icon { font-size: 24px; }
+  .app-link-card .app-text { display: flex; flex-direction: column; line-height: 1.3; }
+  .app-link-card .app-text strong { font-size: 13px; }
+  .app-link-card .app-text span { font-size: 11px; color: var(--text-dim); }
+
+  @media (max-width: 767px) {
+    .app-link-card { width: 100%; }
+  }
+  @media (min-width: 768px) {
+    .app-link-btn { display: none; }
+  }
+
 </style>
 </head>
 <body>
@@ -1001,6 +1051,7 @@
         <span class="weather-icon">⏳</span>
         <span class="temp">—</span>
       </div>
+      <a href="https://apps.apple.com/us/app/databricks-events/id1666181539" target="_blank" rel="noopener" class="app-link-btn" title="Abrir/baixar app DAIS">📱</a>
       <button class="info-toggle-btn" onclick="toggleHeaderInfo()" title="Mostrar info de viagem">ℹ️</button>
     </div>
     <div class="header-right" id="headerRight">
@@ -1199,19 +1250,19 @@ const AGENDA = {
     sublabel: "Chegada + Dia 1",
     summary: "Chegada em SFO às 09:25 (voo United 1768 vindo de Houston). Você perde o keynote de abertura do Ali Ghodsi (9h-11h) — está pousando nesse horário. Almoço solo no hotel, depois caminhada para o Moscone — encontro com Baccala à tarde entre as sessões dele.",
     sessions: [
-      { id: "t1", time: "09:25", duration: "", title: "✈️ Pouso em SFO — United 1768 (vindo de Houston)", type: "free", priority: "high", rationale: "<strong>Voo United UA 1768</strong> · IAH → SFO · Boeing 737-900<br>Localizador: <strong>AODJSO</strong><br>Origem completa: GRU → IAH (UA 63, seg 15/06 21h50) → SFO chegando ter 16/06 09h25.<br><br>Bagagem despachada. Sair do aeroporto pode levar 1h30-2h (imigração + bagagem em voo internacional). Estimativa fora do SFO: ~11h." },
-      { id: "t2", time: "11:00", duration: "45min", title: "🚆 BART SFO → Powell Street + caminhada até o Clift", type: "free", priority: "mid", rationale: "<strong>Linha amarela (Yellow-N) direto.</strong> Sem baldeação. ~28-30 min de viagem.<br><br>Tarifa: ~USD 9-12. Pagar com <strong>Clipper Card</strong> (físico ou virtual no Apple/Google Wallet) ou contactless credit/debit. <em>Cash direto na catraca não funciona mais.</em><br><br>Descer em <strong>Powell Street</strong>. Sair pela rua Geary (lado oposto à loja da Apple). Caminhar ~600m / 7-8 min pela Geary até o nº 495.<br><br><strong>The Clift</strong> · 495 Geary St (entre Taylor e Jones)." },
-      { id: "t3", time: "12:00", duration: "1h", title: "🧳 Bag drop no Clift + almoço solo na região", type: "free", priority: "mid", rationale: "<strong>Check-in oficial só às 16h.</strong> Deixar mala com o concierge do Clift (todo hotel decente aceita) e sair leve para almoço rápido em Union Square ou Tenderloin.<br><br>Opções caminháveis: Sears Fine Food (clássico SF), Cafe Zoetrope, Sam's Grill. Não precisa restaurante — qualquer deli próximo serve." },
-      { id: "t3b", time: "13:30", duration: "30min", title: "🚶 Caminhada Clift → Moscone Center", type: "free", priority: "mid", rationale: "~1.2km / 15 min a pé pela Powell e Mission. Avisar Baccala via WhatsApp que está a caminho. Combinar ponto de encontro específico (ex: stand da Databricks no Expo Hall, entrada principal)." },
-      { id: "t4", time: "14:00", duration: "30min", title: "🤝 Encontro com Baccala no Moscone — primeiro contato presencial", type: "meeting", priority: "high", rationale: "<strong>Primeiro encontro da semana com o Baccala em SF.</strong> Encontro curto entre sessões dele — não é alinhamento longo, é só checar status e se sincronizar.<br><br>Pauta rápida: (1) impressões dele do keynote da manhã, (2) o que ele já mapeou de meetings/contatos, (3) plano para o HH LATAM à noite." },
-      { id: "t5a", time: "14:30", duration: "20min", title: "[ janela curta ] — Expo / pegar café", type: "free", priority: "low", rationale: "Slot de 20min entre o encontro com Baccala e a próxima sessão. Usar pra Expo Hall (1ª passagem) ou recuperar energia com café." },
-      { id: "t5", time: "15:20", duration: "40min", title: "Sessão (slot 15:20–16:00) — escolher pelo catálogo", type: "breakout", priority: "mid", rationale: "Slot disponível. Várias opções no catálogo — sugestão: olhar com calma e escolher uma sessão técnica de UC ou Lakebase. Ver aba Sugestões Sessions." },
+      { id: "t1", time: "09:25", duration: "", title: "✈️ Pouso em SFO — United 1768 (vindo de Houston)", type: "free", priority: "high", rationale: "<strong>UA 1768</strong> · IAH → SFO · Localizador <strong>AODJSO</strong><br>Origem: GRU → IAH (UA 63, sáb 15/06 21h50) → SFO 09h25.<br>Imigração + bagagem: ~1h30. Saída do SFO ~11h." },
+      { id: "t2", time: "11:00", duration: "45min", title: "🚆 BART SFO → Powell Street + caminhada até o Clift", type: "free", priority: "mid", rationale: "BART Yellow-N direto SFO → Powell Street (~28min, USD 9-12).<br>Pagamento: Clipper ou contactless.<br>Powell → Clift (495 Geary): ~600m a pé pela Geary." },
+      { id: "t3", time: "12:00", duration: "1h", title: "🧳 Bag drop no Clift + almoço solo na região", type: "free", priority: "mid", rationale: "Check-in oficial 16h. Bag drop no concierge, almoço solo na região." },
+      { id: "t3b", time: "13:30", duration: "30min", title: "🚶 Caminhada Clift → Moscone Center", type: "free", priority: "mid", rationale: "Clift → Moscone: ~1.2km / 15 min a pé. Alinhar ponto de encontro com Baccala via WhatsApp." },
+      { id: "t4", time: "14:00", duration: "30min", title: "🤝 Encontro com Baccala no Moscone — primeiro contato presencial", type: "meeting", priority: "high", rationale: "Sync rápido entre sessões. Pauta: impressões do keynote da manhã, contatos já mapeados, plano HH LATAM." },
+      { id: "t5a", time: "14:30", duration: "20min", title: "[ janela curta ] — Expo / pegar café", type: "free", priority: "low", rationale: "20min entre o sync com Baccala e a próxima sessão. Expo Hall (1ª passagem)." },
+      { id: "t5", time: "15:20", duration: "40min", title: "Sessão (slot 15:20–16:00) — escolher pelo catálogo", type: "breakout", priority: "mid", rationale: "Slot livre. Ver aba Sugestões Sessions para opções de UC/Lakebase." },
       { id: "t5b", time: "16:10", duration: "40min", title: "🔖 Sessão: Building Intelligent Data Discovery (UC Domains)", type: "breakout", priority: "high", rationale: "<strong>Reservada.</strong> Discover Page + Domains + recommendations no UC para escalar governança e descoberta no nível de conta. Camada de governança alinhada ao negócio + curadoria de dados confiáveis.<br><br><em>Outras 2 sugestões colidem nesse horário (UC Business Semantics, Essential Ingredients GM Financial). Baccala provavelmente assiste GM Financial.</em>" },
-      { id: "t6", time: "17:00", duration: "1h", title: "🤝 Alinhamento com executivos Databricks", type: "meeting", priority: "high", rationale: "<strong>Junto com o Baccala.</strong> Agendar previamente via account exec.<br><br>Pauta: (1) roadmap conjunto PortoBank-Databricks, (2) posicionamento estratégico do banco como case, (3) candidatura dos 2 cases para speaker no Summit, (4) eventuais oportunidades de co-marketing.<br><br>⚠️ <strong>Conflito com sessão reservada 🔖 AI/BI Databricks One (17:20–18:00):</strong> escolher entre encurtar o alinhamento ou pular a sessão." },
-      { id: "t6b", time: "17:20", duration: "40min", title: "🔖 Sessão: How to Turn Every Business User Into Decision Maker (AI/BI + Databricks One)", type: "breakout", priority: "high", rationale: "<strong>Reservada.</strong> Unity Catalog Metric Views + AI/BI + Genie + Databricks One. Blueprint de conversational analytics governado para usuários de negócio.<br><br>⚠️ <strong>Conflito com Alinhamento Databricks (17:00–18:00).</strong> Se priorizar o alinhamento, pular essa sessão (procurar repeat no catálogo)." },
-      { id: "t7a", time: "18:00", duration: "15min", title: "📦 Moscone → Whole Foods (pickup Amazon Locker)", type: "free", priority: "mid", rationale: "<strong>Whole Foods · 399 4th Street</strong> (esquina com Harrison). Loja aberta até 22h.<br><br>Saindo do Moscone, são ~250m / 3-4 min a pé atravessando a 4th Street. Pickup do locker (~5-10 min). Levar o código de 6 dígitos do email Amazon." },
-      { id: "t7b", time: "18:15", duration: "45min", title: "🏨 Uber Whole Foods → Clift + check-in + drop das compras", type: "free", priority: "high", rationale: "Uber ~8 min até o Clift (USD 10-15). Check-in oficial (já liberado desde 16h).<br><br><strong>Confirmação:</strong> 177464078 · Quarto: Executive King · 4 noites.<br><br>Deixar as compras no quarto, banho rápido, trocar de roupa." },
-      { id: "t8", time: "19:30", duration: "2h30", title: "🌎 Happy Hour oficial LATAM (Databricks)", type: "networking", priority: "high", rationale: "<strong>Local:</strong> YBCA Forum + East Garden — 701 Mission Street, San Francisco, CA 94103.<br>Do Clift: ~15 min a pé (1.2km), 1 estação de BART até Powell Street, ou Uber 5 min.<br><br>Chegar 19h30 é aceitável (HH oficial começa 19h mas as conversas reais começam mais tarde). Junto com Baccala.<br><br>Objetivos: (1) identificar peers de jornada de IA em FSI, (2) fortalecer relacionamento com o time Databricks LATAM, (3) eventual ponte com outros C-levels para benchmark.<br><br><em>Na volta, considere Uber em vez de caminhar — região do Mid-Market à noite não é a melhor.</em>" }
+      { id: "t5c", time: "17:00", duration: "20min", title: "Pausa rápida — café / Expo", type: "free", priority: "low", rationale: "Alinhamento Databricks remarcado para qua 7:30 (The Grove)." },
+      { id: "t6b", time: "17:20", duration: "40min", title: "🔖 Sessão: How to Turn Every Business User Into Decision Maker (AI/BI + Databricks One)", type: "breakout", priority: "high", rationale: "<strong>Reservada — junto com Baccala.</strong> Unity Catalog Metric Views + AI/BI + Genie + Databricks One. Blueprint de conversational analytics governado para usuários de negócio." },
+      { id: "t7a", time: "18:00", duration: "15min", title: "📦 Moscone → Whole Foods (pickup Amazon Locker)", type: "free", priority: "mid", rationale: "<strong>Whole Foods · 399 4th Street</strong>. ~250m / 3-4 min a pé do Moscone. Levar código de 6 dígitos do email Amazon." },
+      { id: "t7b", time: "18:15", duration: "45min", title: "🏨 Uber Whole Foods → Clift + check-in + drop das compras", type: "free", priority: "high", rationale: "Uber ~8 min (USD 10-15). Check-in Clift · Confirmação <strong>177464078</strong> · Executive King · 4 noites." },
+      { id: "t8", time: "19:30", duration: "2h30", title: "🌎 Happy Hour oficial LATAM (Databricks)", type: "networking", priority: "high", rationale: "<strong>YBCA Forum + East Garden</strong> · 701 Mission Street.<br>Do Clift: ~15 min a pé / 5 min Uber.<br>Junto com Baccala.<br>Objetivos: peers FSI LATAM, time Databricks LATAM, pontes C-level." }
     
     ]
   },
@@ -1220,6 +1271,7 @@ const AGENDA = {
     sublabel: "Dia 2",
     summary: "Keynote técnico (Matei Zaharia / Reynold Xin tradicionalmente). Seu dia mais denso de breakouts — finalmente todo o tempo disponível. À noite, Summit Party oficial.",
     sessions: [
+      { id: "w0", time: "07:30", duration: "1h", title: "☕ Café da manhã com Databricks — The Grove", type: "meeting", priority: "high", rationale: "<strong>Local:</strong> The Grove Yerba Buena · 690 Mission Street (esq. com 3rd Street) · <em>em frente ao Moscone Center</em> · <a href=\"https://www.thegrovesf.com/\" target=\"_blank\" style=\"color:#4a9eff;\">thegrovesf.com</a><br><br><strong>Presentes:</strong> você, Baccala e Buffon (General Manager Databricks BR).<br><br>Versão reagendada do alinhamento que era originalmente terça 17h. Mais íntimo (3 pessoas), formato café da manhã.<br><br>Pauta: (1) roadmap conjunto PortoBank-Databricks, (2) posicionamento estratégico do banco como case, (3) candidatura dos 2 cases para speaker no Summit, (4) eventuais oportunidades de co-marketing.<br><br><em>Terminar pontual para o keynote técnico às 9h.</em>" },
       { id: "w1", time: "09:00", duration: "1h30", title: "🎤 KEYNOTE técnico — Matei Zaharia / Reynold Xin", type: "keynote", priority: "high", rationale: "Visão do CTO e Chief Architect. Crítico para entender direção da plataforma (Spark, Iceberg, MLflow, Lakebase). Sua versão é mais útil que a do Baccala — você é quem implementa." },
       { id: "w-indicium", time: "10:30", duration: "1h30", title: "🤝 Reunião com Indicium — Plano 2026 + parceria Anthropic", type: "meeting", priority: "high", rationale: "<strong>Junto com Baccala.</strong> Indicium é parceiro atual do PortoBank.<br><br>Pauta:<br>(1) revisão do plano da Indicium com o banco para 2026<br>(2) estado da parceria atual e ajustes<br>(3) aproximação banco ↔ Anthropic via Indicium<br>(4) próximos passos / dependências mútuas<br><br>⚠️ <strong>Conflito:</strong> perdemos os slots de sessões 11:30 e 12:20 (vários cases de bancos LATAM, FSI, Mastercard). Trade-off consciente: reunião com parceiro estratégico > sessões." },
       { id: "w3", time: "12:00", duration: "1h30", title: "🍽️ Almoço com Indicium", type: "meeting", priority: "high", rationale: "<strong>Continuação da reunião com Indicium.</strong> Almoço prolongado para destravar pontos da pauta da manhã + relacionamento. Junto com Baccala.<br><br>⚠️ <strong>Conflito:</strong> perde os slots 12:40–13:20 (How Nubank Migrated SQL, Banking ML Deloitte, Latest Innovations BI/AI, EY Future of Finance — entre outras altas prioridades)." },
@@ -1234,15 +1286,13 @@ const AGENDA = {
   thursday: {
     label: "Qui 18/jun",
     sublabel: "Dia 3 — Baccala vai embora",
-    summary: "Baccala embarca às 12h01. Você fica sozinho representando o banco no resto do evento. Foco: sessões técnicas profundas que o Baccala não priorizou e conversas com squads de produto Databricks.",
+    summary: "Baccala embarca às 12h01. Você fica sozinho representando o banco no resto do evento. Foco: sessões técnicas profundas e conversas com squads de produto Databricks.",
     sessions: [
-      { id: "th1", time: "07:30", duration: "30min", title: "☕ Café rápido com Baccala antes do check-out dele", type: "meeting", priority: "high", rationale: "Última oportunidade de alinhamento presencial antes dele ir embora. Pauta curta: confirmar quem leva o que para o AI Committee, próximos passos." },
       { id: "th2", time: "09:00", duration: "20min", title: "Sessão: Accelerating Investment Decisions with Specialized Claude Code (Waterfall)", type: "breakout", priority: "high", rationale: "<strong>Case com Claude Code agent.</strong> Loans data, 93% acurácia first-pass. Pattern replicável em qualquer ingestão semi-estruturada nossa." },
       { id: "th3", time: "09:50", duration: "20min", title: "Sessão: How XP Drove 72% Lift With Agentic CRM (XP+Hightouch)", type: "breakout", priority: "high", rationale: "<strong>Case BR — XP Investimentos.</strong> Agentic CRM em onboarding/ativação. Resultados duros: +72% abertura, +35% ativação. Lakehouse como engine de decisão em tempo real." },
       { id: "th4", time: "10:20", duration: "40min", title: "Sessão: Beyond Simple Q&A — Agent Orchestrator (World Bank)", type: "breakout", priority: "high", rationale: "<strong>Multi-agent system.</strong> LangGraph orquestrando múltiplos Genie spaces + RAG + visualização. Paralelo conceitual direto com o Asimov." },
       { id: "th5", time: "11:30", duration: "40min", title: "🔖 Sessão: Right Features, Right Time — Fraud Feature Serving (Coinbase)", type: "breakout", priority: "high", rationale: "<strong>Reservada.</strong> Feature platform de fraude em tempo real no Databricks. p99 <50ms, freshness 7x melhor, ~30% ganho de produtividade. Referência de arquitetura aplicável ao PortoBank." },
-      { id: "th6", time: "12:30", duration: "1h30", title: "🍽️ Almoço de debrief — Baccala + Oses", type: "meeting", priority: "high", rationale: "<strong>Crítico fazer enquanto está fresco.</strong> Último encontro presencial antes do Baccala voltar.<br>(1) top 3 anúncios que afetam nosso roadmap<br>(2) decisões a levar para AI Committee<br>(3) 5 contatos a fazer follow-up na semana seguinte<br>(4) ajustes na narrativa para diretoria<br>(5) próximos passos da candidatura dos cases" },
-      { id: "th6b", time: "13:10", duration: "20min", title: "Sessão: How Databricks Runs Its Own Finance (Office of CFO)", type: "breakout", priority: "mid", rationale: "<strong>Dogfooding.</strong> Como o CFO da Databricks usa o próprio produto. Útil pra conversa com a área financeira do banco no retorno.<br><br>⚠️ Pode conflitar com final do almoço de debrief — se atrasar, pula." },
+      { id: "th6b", time: "13:10", duration: "20min", title: "Sessão: How Databricks Runs Its Own Finance (Office of CFO)", type: "breakout", priority: "mid", rationale: "Dogfooding. CFO da Databricks usando o próprio produto." },
       { id: "th7", time: "13:50", duration: "40min", title: "🔖 Sessão: Translating Nubank's Data Lake Access Control (Nubank)", type: "breakout", priority: "high", rationale: "<strong>Reservada.</strong> Case BR técnico. 300K tabelas, 5K usuários. Modelo de Permission Groups + masking. Diretamente aplicável ao nosso desafio de governança fine-grained." }
     
     ]
@@ -1252,9 +1302,9 @@ const AGENDA = {
     sublabel: "Pós-evento · dia livre",
     summary: "Evento oficial encerrou. Dia livre para reuniões follow-up, recuperar sono ou explorar SF. Recomendado: bloco de manhã para review + consolidação das anotações enquanto está tudo fresco.",
     sessions: [
-      { id: "f1", time: "09:00", duration: "2h", title: "📝 Revisão e consolidação das anotações da semana", type: "meeting", priority: "high", rationale: "<strong>Crítico fazer enquanto está fresco.</strong> Sugestão: fazer no Redwood Room do Clift (lobby, ambiente art deco) ou em um café próximo. Usar o botão de Exportar relatório → Markdown → revisar e completar comentários nas sessões. Identificar:<br>(1) top 5 anúncios técnicos que mudam nosso roadmap<br>(2) 3 patterns aplicáveis em curto prazo (90 dias)<br>(3) 5 contatos para follow-up<br>(4) próximos passos da candidatura dos cases" },
-      { id: "f2", time: "12:00", duration: "1h30", title: "Almoço livre", type: "free", priority: "low", rationale: "Sem compromisso. Aproveitar pra fazer um restaurante decente que durante o evento não daria tempo." },
-      { id: "f3", time: "14:00", duration: "", title: "Tarde / noite livre", type: "free", priority: "low", rationale: "Possibilidades: passeio por SF (Golden Gate, Alcatraz, Mission), trabalho remoto, descanso. Ou agendar follow-up com algum contato relevante feito durante o evento." }
+      { id: "f1", time: "09:00", duration: "2h", title: "📝 Revisão e consolidação das anotações da semana", type: "meeting", priority: "high", rationale: "Usar Exportar relatório → Markdown e consolidar:<br>(1) top 5 anúncios técnicos que impactam o roadmap<br>(2) 3 patterns aplicáveis em 90 dias<br>(3) 5 contatos para follow-up<br>(4) próximos passos da candidatura dos cases" },
+      { id: "f2", time: "12:00", duration: "1h30", title: "Almoço livre", type: "free", priority: "low", rationale: "" },
+      { id: "f3", time: "14:00", duration: "", title: "Tarde / noite livre", type: "free", priority: "low", rationale: "Slot livre para follow-ups." }
     ]
   },
   saturday: {
@@ -1262,11 +1312,11 @@ const AGENDA = {
     sublabel: "Volta para casa",
     summary: "Voo de volta às 14:06 (United 737 SFO→ORD com conexão em Chicago). Manhã livre. Voo doméstico, mas como conexão pra GRU é internacional, despachar bagagem com folga.",
     sessions: [
-      { id: "s1", time: "07:00", duration: "1h30", title: "Café da manhã + arrumar mala", type: "free", priority: "mid", rationale: "Sem pressa. Voo às 14h dá folga." },
-      { id: "s2", time: "10:00", duration: "1h30", title: "🏨 Check-out Clift + 🚆 BART Powell → SFO", type: "meeting", priority: "high", rationale: "<strong>Check-out oficial: 11h.</strong> Sair antes — bagagem pronta, devolver chave.<br><br>Caminhada Clift → Powell Street: ~600m / 7-8 min pela Geary.<br><br><strong>BART linha Yellow-S direto para SFO.</strong> Cerca de 30-32 min de viagem.<br>Tarifa: ~USD 9-12. Mesmo pagamento da ida (Clipper / contactless).<br><br>Trens saem a cada 10 min. <em>Sábado de manhã está fora da janela de atrasos por obras (que afeta noites de dom-qui).</em>" },
-      { id: "s3", time: "11:30", duration: "2h30", title: "✈️ Check-in voo SFO → ORD (United 737)", type: "free", priority: "high", rationale: "<strong>Voo United UA 737</strong> · SFO 14:06 → ORD 20:40<br>Localizador: <strong>AODJSO</strong> · Boeing 757-300 · United Economy<br>Conexão em Chicago (50min). Apertado — torcer para o primeiro voo não atrasar." },
-      { id: "s4", time: "14:06", duration: "4h34", title: "🛫 Decolagem SFO → Chicago O'Hare", type: "free", priority: "mid", rationale: "Chegada ORD 20:40. Conexão de 50min é curta — saltar do avião e correr para o gate seguinte." },
-      { id: "s5", time: "21:30", duration: "10h05", title: "🛫 Conexão ORD → GRU (United 845)", type: "free", priority: "low", rationale: "<strong>Voo United UA 845</strong> · Boeing 787-10 Dreamliner<br>Localizador: <strong>AODJSO</strong><br>Decolagem ORD 21:30 · Pouso GRU domingo 21/06 às 09:35." }
+      { id: "s1", time: "07:00", duration: "1h30", title: "Café da manhã + arrumar mala", type: "free", priority: "mid", rationale: "" },
+      { id: "s2", time: "10:00", duration: "1h30", title: "🏨 Check-out Clift + 🚆 BART Powell → SFO", type: "meeting", priority: "high", rationale: "Check-out 11h. Clift → Powell: ~600m a pé. BART Yellow-S direto → SFO (~30min, USD 9-12)." },
+      { id: "s3", time: "11:30", duration: "2h30", title: "✈️ Check-in voo SFO → ORD (United 737)", type: "free", priority: "high", rationale: "<strong>UA 737</strong> · SFO 14:06 → ORD 20:40 · Localizador <strong>AODJSO</strong><br>⚠️ Conexão em Chicago: 50min (apertado)." },
+      { id: "s4", time: "14:06", duration: "4h34", title: "🛫 Decolagem SFO → Chicago O'Hare", type: "free", priority: "mid", rationale: "Chegada ORD 20:40. ⚠️ Conexão de 50min — gate seguinte direto." },
+      { id: "s5", time: "21:30", duration: "10h05", title: "🛫 Conexão ORD → GRU (United 845)", type: "free", priority: "low", rationale: "<strong>UA 845</strong> · ORD 21:30 → GRU 09:35 dom 21/06 · Localizador <strong>AODJSO</strong>." }
     ]
   }
 };

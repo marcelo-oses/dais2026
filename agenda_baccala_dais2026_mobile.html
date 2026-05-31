@@ -986,6 +986,56 @@
     .day-content { display: block !important; page-break-after: always; }
     .session { background: white; border: 1px solid #ccc; }
   }
+
+  .app-link-btn {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .app-link-btn:hover {
+    border-color: var(--accent);
+    background: var(--panel-2);
+  }
+  .app-link-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.15s;
+    min-width: 200px;
+  }
+  .app-link-card:hover {
+    border-color: var(--accent);
+    background: var(--panel-2);
+  }
+  .app-link-card .app-icon { font-size: 24px; }
+  .app-link-card .app-text { display: flex; flex-direction: column; line-height: 1.3; }
+  .app-link-card .app-text strong { font-size: 13px; }
+  .app-link-card .app-text span { font-size: 11px; color: var(--text-dim); }
+
+  @media (max-width: 767px) {
+    .app-link-card { width: 100%; }
+  }
+  @media (min-width: 768px) {
+    .app-link-btn { display: none; }
+  }
+
 </style>
 </head>
 <body>
@@ -1001,6 +1051,7 @@
         <span class="weather-icon">⏳</span>
         <span class="temp">—</span>
       </div>
+      <a href="https://apps.apple.com/us/app/databricks-events/id1666181539" target="_blank" rel="noopener" class="app-link-btn" title="Abrir/baixar app DAIS">📱</a>
       <button class="info-toggle-btn" onclick="toggleHeaderInfo()" title="Mostrar info de viagem">ℹ️</button>
     </div>
     <div class="header-right" id="headerRight">
@@ -1199,10 +1250,11 @@ const AGENDA = {
     sublabel: "Pre-day",
     summary: "Dia opcional do evento (training, hackathon, meetups). Baccala chega sozinho — Oses só desembarca na terça. À noite, jantar com Indicium.",
     sessions: [
-      { id: "p1", time: "Manhã", duration: "", title: "Manhã livre — ambientação", type: "free", priority: "low", rationale: "Recomendo passeio leve ou trabalho remoto no hotel. Nada formal antes do almoço." },
-      { id: "p2", time: "14:00", duration: "1h30", title: "Reconhecimento Moscone Center + retirada de credenciais", type: "meeting", priority: "mid", rationale: "Mapear salas das sessões de terça/quarta. Evita correria no primeiro dia oficial. Credencial pode ter fila — chegar cedo na janela." },
-      { id: "p3", time: "16:00", duration: "2h", title: "Welcome Reception / Meetups (oficial Databricks)", type: "networking", priority: "mid", rationale: "Networking informal de abertura. Foco: outros executivos de FSI e bancos LATAM presentes. Boa janela para sondar quem está aqui." },
-      { id: "p4", time: "19:30", duration: "2h30", title: "🍽️ LATAM Client Welcome Dinner — Indicium", type: "meeting", priority: "high", rationale: "<strong>Local:</strong> Waterbar Restaurant · 399 The Embarcadero, San Francisco, CA 94015<br><em>Vista pra Bay Bridge, restaurante de frutos do mar. Do W Hotel: ~2km / Uber 8-10 min ou caminhada 25 min pelo Embarcadero.</em><br><br><strong>Você vai sozinho</strong> (Oses ainda em SP).<br><br><strong>Contatos Indicium</strong> (toque no ícone pra abrir no WhatsApp):<br>· Alexandre Rici · Account Executive · <a href=\"https://wa.me/5511970945500\" target=\"_blank\" style=\"color:#25d366;text-decoration:none;\">💬 (11) 97094-5500</a><br>· Matheus Dellagnelo · CEO Americas · <a href=\"https://wa.me/5548991123036\" target=\"_blank\" style=\"color:#25d366;text-decoration:none;\">💬 (48) 99112-3036</a>" }
+      { id: "p1", time: "Manhã", duration: "", title: "Manhã livre — ambientação", type: "free", priority: "low", rationale: "" },
+      { id: "p2", time: "14:00", duration: "1h30", title: "Reconhecimento Moscone Center + retirada de credenciais", type: "meeting", priority: "mid", rationale: "Mapear salas das sessões de terça/quarta. Credencial pode ter fila." },
+      { id: "p3", time: "16:00", duration: "2h", title: "Welcome Reception / Meetups (oficial Databricks)", type: "networking", priority: "mid", rationale: "Networking de abertura. Foco: executivos FSI/bancos LATAM." },
+      { id: "p4", time: "19:30", duration: "2h30", title: "🍽️ Opção A — LATAM Client Welcome Dinner (Indicium)", type: "meeting", priority: "high", rationale: "<strong>Local:</strong> Waterbar Restaurant · 399 The Embarcadero, San Francisco, CA 94015<br><em>Vista pra Bay Bridge, restaurante de frutos do mar. Do W Hotel: ~2km / Uber 8-10 min ou caminhada 25 min pelo Embarcadero.</em><br><br><strong>Você vai sozinho</strong> (Oses ainda em SP).<br><br><strong>Contatos Indicium</strong> (toque no ícone pra abrir no WhatsApp):<br>· Alexandre Rici · Account Executive · <a href=\"https://wa.me/5511970945500\" target=\"_blank\" style=\"color:#25d366;text-decoration:none;\">💬 (11) 97094-5500</a><br>· Matheus Dellagnelo · CEO Americas · <a href=\"https://wa.me/5548991123036\" target=\"_blank\" style=\"color:#25d366;text-decoration:none;\">💬 (48) 99112-3036</a><br><br><em>⚠️ Conflito com Opção B (ThoughtWorks / Kin Khao) — escolher uma.</em>" },
+      { id: "p4b", time: "19:30", duration: "2h30", title: "🍽️ Opção B — Jantar ThoughtWorks", type: "meeting", priority: "high", rationale: "<strong>Local:</strong> Kin Khao · restaurante tailandês premiado (Michelin) em San Francisco.<br><br><strong>Contato ThoughtWorks</strong> (toque no ícone pra abrir no WhatsApp):<br>· Elcio Maruyama · <a href=\"https://wa.me/5511982263185\" target=\"_blank\" style=\"color:#25d366;text-decoration:none;\">💬 (11) 98226-3185</a><br><br><em>⚠️ Conflito com Opção A (Indicium / Waterbar) — escolher uma. Avisar quem ficar de fora com antecedência.</em>" }
     ]
   },
   tuesday: {
@@ -1210,17 +1262,17 @@ const AGENDA = {
     sublabel: "Dia 1 oficial",
     summary: "Abertura oficial. Keynote do Ali Ghodsi tradicionalmente traz os anúncios principais do ano. Oses pousa em SFO 09h25 e fica em logística (BART + bag drop + locker pickup) até o final da tarde. Encontro rápido com ele no Moscone às 14h, alinhamento maior no HH LATAM.",
     sessions: [
-      { id: "t1", time: "07:30", duration: "1h", title: "Café da manhã + leitura do press release do dia", type: "meal", priority: "mid", rationale: "Databricks geralmente publica blog post com anúncios às 6-7h PT. Ler ANTES do keynote pra contextualizar." },
-      { id: "t2", time: "08:00", duration: "3h", title: "🎤 KEYNOTE de abertura — Ali Ghodsi (CEO Databricks)", type: "keynote", priority: "high", rationale: "<strong>Imperdível.</strong> Anúncios de plataforma do ano. Implicações diretas para nossa stack: AgentBricks, Lakebase, evolução do Unity Catalog. Tomar notas para report executivo pós-evento.<br><br><em>Horário real do catálogo: 8h-11h.</em>" },
-      { id: "t3", time: "11:30", duration: "40min", title: "Sessão: Underwriting the Future (Insurers Panel)", type: "breakout", priority: "mid", rationale: "Painel de seguradoras. Pode interessar pelo paralelo com Porto Seguros (ecossistema). Modelo de operating com dados próprios." },
-      { id: "t4", time: "12:20", duration: "20min", title: "Sessão: Generating High-Fidelity Synthetic Financial Data (Deloitte)", type: "breakout", priority: "low", rationale: "Dados sintéticos para acelerar inovação sem expor dados sensíveis. Curta (20min). Vale ouvir." },
+      { id: "t1", time: "07:30", duration: "1h", title: "Café da manhã + leitura do press release do dia", type: "meal", priority: "mid", rationale: "Databricks publica press release às 6-7h PT. Ler antes do keynote." },
+      { id: "t2", time: "08:00", duration: "3h", title: "🎤 KEYNOTE de abertura — Ali Ghodsi (CEO Databricks)", type: "keynote", priority: "high", rationale: "Anúncios de plataforma do ano. Implicações diretas: AgentBricks, Lakebase, Unity Catalog.<br>Horário oficial: 8h-11h." },
+      { id: "t3", time: "11:30", duration: "40min", title: "Sessão: Underwriting the Future (Insurers Panel)", type: "breakout", priority: "mid", rationale: "Painel de seguradoras. Paralelo com Porto Seguros (ecossistema)." },
+      { id: "t4", time: "12:20", duration: "20min", title: "Sessão: Generating High-Fidelity Synthetic Financial Data (Deloitte)", type: "breakout", priority: "low", rationale: "Dados sintéticos para inovação sem exposição de dados sensíveis. 20min." },
       { id: "t4b", time: "14:00", duration: "30min", title: "Chegada do Oses em SF", type: "meeting", priority: "high", rationale: "Oses entrará em contato para combinar encontro." },
-      { id: "t5", time: "12:40", duration: "40min", title: "Sessão: Future-Proofing Finance (Navy Federal + Deloitte)", type: "breakout", priority: "mid", rationale: "Modernização de plataforma com UC + Agent Bricks em Credit Union. Lineage e governança como base para Finance + AI." },
-      { id: "t6", time: "13:50", duration: "40min", title: "Sessão: Scaling Responsible AI in Banking & Payments (Santander + Vantage Bank)", type: "breakout", priority: "high", rationale: "<strong>Sessão alta prioridade.</strong> CFO do Santander Payments + CRO do Vantage Bank. Como bancos grandes escalam responsible AI mantendo controle regulatório." },
-      { id: "t7", time: "16:10", duration: "40min", title: "Sessão: Essential Ingredients to Digital Transformation (GM Financial)", type: "breakout", priority: "high", rationale: "SVP da GM Financial sobre o lado humano da transformação: data strategy board, CoE, FinOps, SOX. Operating model — não só tech. Conteúdo direto para o seu papel." },
-      { id: "t8", time: "17:00", duration: "1h", title: "🤝 Alinhamento com executivos Databricks", type: "meeting", priority: "high", rationale: "<strong>Agendar previamente via account exec.</strong> 1h dedicada.<br><br>Pauta: (1) roadmap conjunto PortoBank-Databricks, (2) posicionamento estratégico do banco como case, (3) candidatura dos 2 cases para speaker no Summit, (4) eventuais oportunidades de co-marketing.<br><br>Oses presente.<br><br>⚠️ <strong>Conflito com sessão reservada 🔖 AI/BI Databricks One (17:20–18:00):</strong> escolher entre encurtar o alinhamento ou pular a sessão." },
-      { id: "t8b", time: "17:20", duration: "40min", title: "🔖 Sessão: How to Turn Every Business User Into Decision Maker (AI/BI + Databricks One)", type: "breakout", priority: "high", rationale: "<strong>Reservada — junto com Oses.</strong> Unity Catalog Metric Views + AI/BI + Genie + Databricks One. Blueprint de conversational analytics governado para usuários de negócio.<br><br>⚠️ <strong>Conflito com Alinhamento Databricks (17:00–18:00).</strong> Se priorizar o alinhamento, pular essa sessão (procurar repeat no catálogo)." },
-      { id: "t9", time: "19:00", duration: "3h", title: "🌎 Happy Hour oficial LATAM (Databricks)", type: "networking", priority: "high", rationale: "<strong>Local:</strong> YBCA Forum + East Garden — 701 Mission Street, San Francisco, CA 94103 (a ~150m do W Hotel, em frente ao Moscone).<br><br><strong>Evento oficial LATAM.</strong> Networking concentrado com executivos da região — bancos brasileiros, fintechs, varejo, grandes corporativos.<br><br>Objetivos: (1) identificar peers de jornada de IA em FSI, (2) fortalecer relacionamento com o time Databricks LATAM, (3) eventual ponte com outros C-levels para benchmark.<br><br>Oses presente." }
+      { id: "t5", time: "12:40", duration: "40min", title: "Sessão: Future-Proofing Finance (Navy Federal + Deloitte)", type: "breakout", priority: "mid", rationale: "UC + Agent Bricks em Credit Union. Lineage/governança como base para Finance + AI." },
+      { id: "t6", time: "13:50", duration: "40min", title: "Sessão: Scaling Responsible AI in Banking & Payments (Santander + Vantage Bank)", type: "breakout", priority: "high", rationale: "CFO Santander Payments + CRO Vantage Bank. Responsible AI em escala mantendo controle regulatório." },
+      { id: "t7", time: "16:10", duration: "40min", title: "Sessão: Essential Ingredients to Digital Transformation (GM Financial)", type: "breakout", priority: "high", rationale: "SVP GM Financial. Data strategy board, CoE, FinOps, SOX. Operating model." },
+      { id: "t7b", time: "17:00", duration: "20min", title: "Pausa rápida — café / Expo", type: "free", priority: "low", rationale: "Alinhamento Databricks remarcado para qua 7:30 (The Grove)." },
+      { id: "t8b", time: "17:20", duration: "40min", title: "🔖 Sessão: How to Turn Every Business User Into Decision Maker (AI/BI + Databricks One)", type: "breakout", priority: "high", rationale: "<strong>Reservada — junto com Oses.</strong> Unity Catalog Metric Views + AI/BI + Genie + Databricks One. Blueprint de conversational analytics governado para usuários de negócio." },
+      { id: "t9", time: "19:00", duration: "3h", title: "🌎 Happy Hour oficial LATAM (Databricks)", type: "networking", priority: "high", rationale: "<strong>YBCA Forum + East Garden</strong> · 701 Mission Street (~150m do W Hotel).<br>Junto com Oses.<br>Objetivos: peers FSI LATAM, time Databricks LATAM, pontes C-level." }
     
     ]
   },
@@ -1229,15 +1281,16 @@ const AGENDA = {
     sublabel: "Dia 2",
     summary: "Keynote técnico (Matei Zaharia / Reynold Xin tradicionalmente). Dia mais denso de breakouts. À noite, Summit Party oficial da Databricks.",
     sessions: [
-      { id: "w1", time: "09:00", duration: "1h30", title: "🎤 KEYNOTE técnico — Matei Zaharia / Reynold Xin", type: "keynote", priority: "high", rationale: "Visão do CTO e Chief Architect. Mais técnico que o de terça, mas crítico para entender direção da plataforma (Spark, Iceberg, MLflow, Lakebase)." },
+      { id: "w0", time: "07:30", duration: "1h", title: "☕ Café da manhã com Databricks — The Grove", type: "meeting", priority: "high", rationale: "<strong>Local:</strong> The Grove Yerba Buena · 690 Mission Street (esq. com 3rd Street) · <em>em frente ao Moscone Center</em> · <a href=\"https://www.thegrovesf.com/\" target=\"_blank\" style=\"color:#4a9eff;\">thegrovesf.com</a><br><br><strong>Presentes:</strong> você, Oses e Buffon (General Manager Databricks BR).<br><br>Versão reagendada do alinhamento que era originalmente terça 17h. Mais íntimo (3 pessoas), formato café da manhã.<br><br>Pauta: (1) roadmap conjunto PortoBank-Databricks, (2) posicionamento estratégico do banco como case, (3) candidatura dos 2 cases para speaker no Summit, (4) eventuais oportunidades de co-marketing.<br><br><em>Terminar pontual para o keynote técnico às 9h.</em>" },
+      { id: "w1", time: "09:00", duration: "1h30", title: "🎤 KEYNOTE técnico — Matei Zaharia / Reynold Xin", type: "keynote", priority: "high", rationale: "CTO + Chief Architect. Direção da plataforma: Spark, Iceberg, MLflow, Lakebase." },
       { id: "w-indicium", time: "10:30", duration: "1h30", title: "🤝 Reunião com Indicium — Plano 2026 + parceria Anthropic", type: "meeting", priority: "high", rationale: "<strong>Junto com Oses.</strong> Indicium é parceiro atual do PortoBank — você já os conhece.<br><br>Pauta:<br>(1) revisão do plano da Indicium com o banco para 2026<br>(2) estado da parceria atual e ajustes<br>(3) aproximação banco ↔ Anthropic via Indicium<br>(4) próximos passos / dependências mútuas<br><br>⚠️ <strong>Conflito:</strong> perdemos os slots de sessões 11:30 e 12:20." },
       { id: "w3", time: "12:00", duration: "1h30", title: "🍽️ Almoço com Indicium", type: "meeting", priority: "high", rationale: "<strong>Continuação da reunião com Indicium.</strong> Almoço prolongado para destravar pontos da pauta da manhã + relacionamento. Junto com Oses.<br><br>⚠️ <strong>Conflito:</strong> perde os slots 12:40–13:20 (How Nubank Migrated SQL, Banking ML Deloitte, Latest Innovations BI/AI)." },
       { id: "w4", time: "13:00", duration: "1h30", title: "🔖 Sessão: Financial Services Industry Forum (Robinhood — Vlad Tenev)", type: "breakout", priority: "high", rationale: "<strong>Reservada — junto com Oses.</strong> Fórum executivo de FSI com o CEO do Robinhood. IA agentica com governança em ambiente regulado. Provavelmente o evento de maior densidade C-level FSI da semana.<br><br>⚠️ <strong>Conflito com final do Almoço Indicium (12:00–13:30):</strong> precisa sair do almoço pontualmente às 13:00 ou perder o início do Forum." },
-      { id: "w5", time: "15:00", duration: "40min", title: "Sessão (slot 15:00–15:40) — escolher pelo catálogo", type: "breakout", priority: "mid", rationale: "Slot disponível após o Forum. Várias opções (Industry Forums, sessões de banking). Ver Sugestões Sessions na aba ou catálogo Databricks." },
+      { id: "w5", time: "15:00", duration: "40min", title: "Sessão (slot 15:00–15:40) — escolher pelo catálogo", type: "breakout", priority: "mid", rationale: "Slot livre pós Forum. Ver Sugestões Sessions." },
       { id: "w6", time: "16:10", duration: "40min", title: "Sessão: Anthropic + Adidas + Databricks — 400h de produtividade semanal com Conversational AI", type: "breakout", priority: "high", rationale: "<strong>Junto com Oses.</strong> Case real de como Adidas operacionalizou Anthropic em escala via Databricks (400h/semana de ganho com conversational AI).<br><br>Conexão direta com a pauta Anthropic levantada no almoço com a Indicium — material concreto pra alimentar a discussão de aproximação PortoBank ↔ Anthropic via Indicium." },
-      { id: "w7", time: "17:00", duration: "1h", title: "Expo Hall (2ª passagem — agora com profundidade)", type: "networking", priority: "mid", rationale: "Conversas com booths mapeados na terça. Levar perguntas específicas, não 'me conta sobre o produto'." },
+      { id: "w7", time: "17:00", duration: "1h", title: "Expo Hall (2ª passagem — agora com profundidade)", type: "networking", priority: "mid", rationale: "Booths mapeados na terça. Perguntas específicas." },
       { id: "w8", time: "19:30", duration: "2h30", title: "🎉 Summit Party (oficial Databricks)", type: "networking", priority: "mid", rationale: "" },
-      { id: "w9", time: "22:00", duration: "", title: "🏨 Volta ao hotel + preparar mala", type: "free", priority: "high", rationale: "Voltar do Summit Party e deixar mala 100% pronta antes de dormir. Acordar quinta de manhã com tudo arrumado evita correria no check-out." }
+      { id: "w9", time: "22:00", duration: "", title: "🏨 Volta ao hotel + preparar mala", type: "free", priority: "high", rationale: "Bagagem pronta antes de dormir." }
     
     ]
   },
@@ -1246,12 +1299,12 @@ const AGENDA = {
     sublabel: "Dia 3 — saída cedo",
     summary: "⚠️ Voo de volta às 12h01. Manhã praticamente inteira consumida com check-out, transfer e check-in no SFO. Não dá pra agendar nada no evento depois das 8h30. Debrief contigo precisou ir pra quarta à noite.",
     sessions: [
-      { id: "th0", time: "07:00", duration: "1h", title: "🥐 Café da manhã + arrumar mala", type: "free", priority: "mid", rationale: "Acordar cedo. Bagagem pronta antes do check-out." },
-      { id: "th1", time: "08:00", duration: "30min", title: "🏨 Check-out no W San Francisco", type: "meeting", priority: "high", rationale: "<strong>Check-out oficial: 11h.</strong> Mas vamos antes pra ter folga.<br>Sair do hotel até 8h45 no máximo." },
-      { id: "th2", time: "08:45", duration: "45min", title: "🚕 Transfer W → SFO", type: "free", priority: "high", rationale: "Uber/Lyft: 25-40 min dependendo do trânsito (horário de pico de quinta de manhã pode esticar)." },
-      { id: "th3", time: "09:30", duration: "2h30", title: "✈️ Check-in voo de volta — American 2565 → MIA", type: "free", priority: "high", rationale: "<strong>Voo American 2565</strong> · SFO 12:01 → MIA 20:47<br>Localizador <strong>LKETIC</strong> · bagagem despachada 23kg<br><br>Estar no SFO 2h30 antes (recomendado pra voo doméstico longo com despacho de bagagem). Vai dar tempo. Não atrase." },
-      { id: "th4", time: "12:01", duration: "8h46", title: "🛫 Decolagem SFO → MIA", type: "free", priority: "mid", rationale: "Voo doméstico longo. Chegada em Miami 20:47. Conexão de 2h08 lá." },
-      { id: "th5", time: "22:55", duration: "9h25", title: "🛫 Conexão MIA → GIG (American 0905)", type: "free", priority: "low", rationale: "Decolagem MIA 22:55 · Pouso GIG sexta 19/06 às 08:20.<br>Voo de aproximadamente 9h25." }
+      { id: "th0", time: "07:00", duration: "1h", title: "🥐 Café da manhã + arrumar mala", type: "free", priority: "mid", rationale: "" },
+      { id: "th1", time: "08:00", duration: "30min", title: "🏨 Check-out no W San Francisco", type: "meeting", priority: "high", rationale: "Sair do hotel até 8h45 (check-out oficial 11h)." },
+      { id: "th2", time: "08:45", duration: "45min", title: "🚕 Transfer W → SFO", type: "free", priority: "high", rationale: "Uber/Lyft: 25-40 min (horário de pico)." },
+      { id: "th3", time: "09:30", duration: "2h30", title: "✈️ Check-in voo de volta — American 2565 → MIA", type: "free", priority: "high", rationale: "<strong>AA 2565</strong> · SFO 12:01 → MIA 20:47 · Localizador <strong>LKETIC</strong> · bagagem 23kg.<br>Chegada SFO 2h30 antes." },
+      { id: "th4", time: "12:01", duration: "8h46", title: "🛫 Decolagem SFO → MIA", type: "free", priority: "mid", rationale: "Chegada MIA 20:47. Conexão 2h08." },
+      { id: "th5", time: "22:55", duration: "9h25", title: "🛫 Conexão MIA → GIG (American 0905)", type: "free", priority: "low", rationale: "<strong>AA 0905</strong> · MIA 22:55 → GIG 08:20 sex 19/06." }
     ]
   }
 };
